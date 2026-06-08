@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>淡水新市鎮五大管線申請進度</title>
+  <style>
+    :root { --ink:#1d2622; --muted:#65736d; --line:#d8e2dc; --bg:#f6f8f6; --panel:#fff; --green:#1f7a57; --amber:#b36b12; --soft:#edf3ef; --soft-amber:#fff2d6; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--bg); font-family:"Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif; line-height:1.45; }
+    header { padding:22px clamp(16px,3vw,36px) 16px; background:#fff; border-bottom:1px solid var(--line); }
+    .title-row { display:flex; justify-content:space-between; align-items:end; gap:16px; flex-wrap:wrap; }
+    h1 { margin:0; font-size:clamp(24px,3vw,34px); letter-spacing:0; }
+    .meta { color:var(--muted); font-size:14px; }
+    main { padding:20px clamp(16px,3vw,36px) 36px; }
+    .toolbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:0 0 18px; }
+    .nav-link, input, select, button { min-height:38px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); padding:8px 10px; font:inherit; }
+    .nav-link { display:inline-flex; align-items:center; text-decoration:none; }
+    input { flex:1; min-width:min(360px,100%); }
+    button { cursor:pointer; }
+    button:hover, .nav-link:hover { background:var(--soft); }
+    .summary { display:grid; grid-template-columns:repeat(5,minmax(150px,1fr)); gap:12px; margin-bottom:18px; }
+    .metric { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px; min-height:104px; }
+    .metric small { display:block; color:var(--muted); margin-bottom:6px; }
+    .metric strong { display:block; font-size:18px; margin-bottom:6px; }
+    .metric span { color:var(--muted); font-size:13px; }
+    section { margin-top:18px; background:var(--panel); border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+    .section-head { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid var(--line); background:#fbfcfb; }
+    h2 { margin:0; font-size:18px; letter-spacing:0; }
+    .section-head p { margin:0; color:var(--muted); font-size:14px; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; min-width:1120px; font-size:14px; }
+    th, td { padding:10px 12px; border-bottom:1px solid #edf1ee; text-align:left; vertical-align:top; }
+    th { position:sticky; top:0; background:#f3f7f4; color:#34423d; z-index:1; }
+    tr:hover td { background:#fbfcfb; }
+    .tag { display:inline-flex; min-height:24px; align-items:center; border-radius:999px; padding:3px 8px; font-size:13px; white-space:nowrap; background:var(--soft-amber); color:#8a540c; }
+    .source-list { padding:16px; display:grid; gap:8px; }
+    .source-list a { color:#176f75; }
+    .empty { color:var(--muted); }
+    @media (max-width:900px) { .summary { grid-template-columns:repeat(2,minmax(160px,1fr)); } }
+    @media (max-width:560px) { .summary { grid-template-columns:1fr; } .section-head { align-items:flex-start; flex-direction:column; } input,select,button,.nav-link { width:100%; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title-row">
+      <div>
+        <h1>淡水新市鎮五大管線申請進度</h1>
+        <div class="meta">先建立申請流程架構：電力、自來水、污水/排水、電信、瓦斯；日期與窗口後續依送件實況補入</div>
+      </div>
+      <div class="meta">建立日：2026/06/04</div>
+    </div>
+  </header>
+  <main>
+    <div class="toolbar">
+      <a class="nav-link" href="營建水電整合排程.html">整合排程</a>
+      <a class="nav-link" href="水電進度排程.html">最新水電進度</a>
+      <a class="nav-link" href="室內裝潢進度.html">室內裝潢進度</a>
+      <input id="search" type="search" placeholder="搜尋管線、申請流程、主管機關、文件">
+      <select id="systemFilter" aria-label="管線篩選"><option value="all">全部管線</option></select>
+      <button id="reset">清除</button>
+    </div>
+
+    <div class="summary" id="summary"></div>
+
+    <section>
+      <div class="section-head">
+        <h2>五大管線申請流程</h2>
+        <p id="rowCount"></p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>狀態</th>
+              <th>管線</th>
+              <th>主管/窗口</th>
+              <th>流程</th>
+              <th>應備資料</th>
+              <th>開始</th>
+              <th>完成</th>
+              <th>備註</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>資料來源</h2>
+        <p>先列公開流程依據，實際送件仍以各管線單位最新要求為準</p>
+      </div>
+      <div class="source-list">
+        <a href="https://www.taipower.com.tw/media/txwfndkz/2021090713331345710.pdf?mediaDL=true">台電：新增設用電申請須知</a>
+        <a href="https://www.gov.tw/News_Content_2_833232.html">台灣自來水公司：初/預審內線圖申請</a>
+        <a href="https://www.wrs.ntpc.gov.tw/uploaddowndoc?file=govdata%2F201907161028480.pdf&filedisplay=16-%E6%96%B0%E5%8C%97%E5%B8%82%E6%B1%A1%E6%B0%B4%E4%B8%8B%E6%B0%B4%E9%81%93%E7%94%A8%E6%88%B6%E6%8E%92%E6%B0%B4%E8%A8%AD%E5%82%99%E7%94%B3%E8%AB%8B%E7%A8%8B%E5%BA%8F%E8%AA%AA%E6%98%8E%E5%8F%8A%E7%B5%B1%E8%A8%88.pdf&flag=doc">新北市水利局：污水下水道用戶排水設備申請程序</a>
+        <a href="https://www.ncc.gov.tw/Chinese/service_detail.aspx?sn=1143">NCC：建築物屋內外電信設備審查作業原則</a>
+        <a href="https://www.economic.ntpc.gov.tw/Custom/%E5%A4%A9%E7%84%B6%E6%B0%A3">新北市經發局：天然氣公司服務區，淡水區為欣芝實業</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    const tasks = [
+      { system:"電力", owner:"台灣電力公司", step:"用電容量與受電方式確認", docs:"負載計算、單線圖、設備容量、建築資料", start:"", end:"", note:"確認高低壓、受電室/配電場所、外線需求。" },
+      { system:"電力", owner:"台灣電力公司", step:"新設用電申請/配電場所審查", docs:"申請書、設計圖說、配電場所資料", start:"", end:"", note:"大樓用電容量達規模時需注意高壓供電及配電場所審查。" },
+      { system:"電力", owner:"台灣電力公司", step:"外線設計與受電設備施工", docs:"台電審查意見、施工圖、受電設備資料", start:"", end:"", note:"配合道路挖掘、管溝、受電室與開關箱備料。" },
+      { system:"電力", owner:"台灣電力公司", step:"竣工查驗/裝表送電", docs:"竣工資料、測試紀錄、用電契約資料", start:"", end:"", note:"正式送電前需完成測試、查驗與缺失改善。" },
+
+      { system:"自來水", owner:"台灣自來水公司", step:"用水量估算與內線圖整理", docs:"給水系統圖、平面圖、建築副本圖、用水設備資料", start:"", end:"", note:"先確認總表、分表、消防補水及泵浦/水箱需求。" },
+      { system:"自來水", owner:"台灣自來水公司", step:"初/預審內線圖申請", docs:"內線圖、建築資料、申請表", start:"", end:"", note:"內線圖審查合格後作為後續施工及申請依據。" },
+      { system:"自來水", owner:"台灣自來水公司", step:"外管接水與內線施工", docs:"審查合格圖、施工圖、道路挖掘需求", start:"", end:"", note:"配合道路、人行道與管線埋設介面。" },
+      { system:"自來水", owner:"台灣自來水公司", step:"竣工檢驗/接水", docs:"竣工圖、檢驗紀錄、裝表資料", start:"", end:"", note:"接水前確認試壓、沖洗、表位及管線標示。" },
+
+      { system:"污水/排水", owner:"新北市水利局/下水道單位", step:"污水人孔套繪與接管可行性確認", docs:"基地位置、排水方向、下水道人孔資料", start:"", end:"", note:"新北市規則提到設置或變更用戶排水設備前，須辦理污水人孔套繪。" },
+      { system:"污水/排水", owner:"新北市水利局/下水道單位", step:"用戶排水設備預設/聯接圖說送審", docs:"申請表、平面圖、系統圖、簽證圖說", start:"", end:"", note:"建議在放樣勘驗前完成相關申請與圖說確認。" },
+      { system:"污水/排水", owner:"新北市水利局/下水道單位", step:"用戶排水設備施工", docs:"核准圖、施工紀錄、材料資料", start:"", end:"", note:"注意污水、雨水、廢水分流及接管高程。" },
+      { system:"污水/排水", owner:"新北市水利局/下水道單位", step:"竣工查驗/聯接核可", docs:"竣工圖、查驗紀錄、改善照片", start:"", end:"", note:"作為後續使照與公共管線接管依據。" },
+
+      { system:"電信", owner:"NCC審驗機構/電信與有線電視業者", step:"電信與有線電視洽辦", docs:"基地資料、電信室/總配線箱位置、引進管路規劃", start:"", end:"", note:"NCC資料指出新建建築物設計完成後，先與電信及有線電視業者洽辦引進管、設備空間與纜線位置。" },
+      { system:"電信", owner:"NCC審驗機構", step:"建築物屋內外電信設備審查", docs:"洽辦完成申請表、設計清單、平面配置圖、垂直昇位圖、基地位置圖", start:"", end:"", note:"審查合格後取得核章圖說與合格函。" },
+      { system:"電信", owner:"NCC審驗機構/電信業者", step:"電信管線與設備空間施工", docs:"審查合格圖、施工圖、材料資料", start:"", end:"", note:"配合弱電管道、電信室、MDF/光纖設備與接地。" },
+      { system:"電信", owner:"NCC審驗機構/電信業者", step:"完工審驗/申請供裝", docs:"竣工圖、測試紀錄、審驗申請資料", start:"", end:"", note:"完工後需審驗合格，才能銜接電信及有線電視供裝。" },
+
+      { system:"瓦斯", owner:"欣芝實業股份有限公司", step:"確認供氣範圍與管線可接性", docs:"基地位置、戶數、使用量、瓦斯設備需求", start:"", end:"", note:"新北市經發局資料列淡水區天然氣業者為欣芝實業。" },
+      { system:"瓦斯", owner:"欣芝實業股份有限公司", step:"管線裝置申請/估價", docs:"管線裝置申請、建物位置圖、配管平面圖、立體示意圖", start:"", end:"", note:"實際表單與收費依欣芝實業最新規定確認。" },
+      { system:"瓦斯", owner:"欣芝實業股份有限公司", step:"瓦斯內外管施工", docs:"核准圖、施工圖、材料資料", start:"", end:"", note:"注意瓦斯管道間、通風、穿牆套管、防火區劃與道路挖掘介面。" },
+      { system:"瓦斯", owner:"欣芝實業股份有限公司", step:"試壓驗收/掛表供氣", docs:"試壓紀錄、竣工圖、掛表資料", start:"", end:"", note:"掛表供氣前須完成試壓、查驗與缺失改善。" }
+    ];
+    function filteredTasks() {
+      const keyword = document.querySelector("#search").value.trim().toLowerCase();
+      const system = document.querySelector("#systemFilter").value;
+      return tasks.filter(task => {
+        const text = `${task.system} ${task.owner} ${task.step} ${task.docs} ${task.note}`.toLowerCase();
+        return (system === "all" || task.system === system) && (!keyword || text.includes(keyword));
+      });
+    }
+    function renderSummary() {
+      const systems = [...new Set(tasks.map(task => task.system))];
+      document.querySelector("#summary").innerHTML = systems.map(system => {
+        const count = tasks.filter(task => task.system === system).length;
+        return `<div class="metric"><small>${system}</small><strong>${count} 步驟</strong><span>日期待排，先建立申請流程</span></div>`;
+      }).join("");
+    }
+    function renderSystemFilter() {
+      const systems = [...new Set(tasks.map(task => task.system))];
+      document.querySelector("#systemFilter").innerHTML += systems.map(system => `<option value="${system}">${system}</option>`).join("");
+    }
+    function renderTable() {
+      const rows = filteredTasks();
+      document.querySelector("#rowCount").textContent = `目前顯示 ${rows.length} 筆`;
+      document.querySelector("#scheduleBody").innerHTML = rows.map(task => `<tr><td><span class="tag">待排</span></td><td>${task.system}</td><td>${task.owner}</td><td><strong>${task.step}</strong></td><td>${task.docs}</td><td class="empty">${task.start || "待填"}</td><td class="empty">${task.end || "待填"}</td><td>${task.note}</td></tr>`).join("");
+    }
+    document.querySelector("#search").addEventListener("input", renderTable);
+    document.querySelector("#systemFilter").addEventListener("change", renderTable);
+    document.querySelector("#reset").addEventListener("click", () => { document.querySelector("#search").value = ""; document.querySelector("#systemFilter").value = "all"; renderTable(); });
+    renderSummary();
+    renderSystemFilter();
+    renderTable();
+  </script>
+</body>
+</html>

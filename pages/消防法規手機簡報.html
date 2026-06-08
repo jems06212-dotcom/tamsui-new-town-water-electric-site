@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>地下室停車場消防法規原則簡報</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172026;
+      --muted: #5d6972;
+      --line: #d8dde1;
+      --paper: #f7f8f6;
+      --panel: #ffffff;
+      --blue: #1f6f9f;
+      --red: #b5372f;
+      --green: #2d7356;
+      --yellow: #d49b24;
+      --dark: #24313a;
+      --shadow: 0 10px 28px rgba(22, 32, 38, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif;
+      background:
+        linear-gradient(180deg, rgba(31,111,159,0.08), transparent 28rem),
+        var(--paper);
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    a { color: inherit; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 248, 246, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 10px 14px 8px;
+    }
+
+    .title-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      min-width: 0;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--dark);
+    }
+
+    .date-pill {
+      flex: 0 0 auto;
+      padding: 5px 8px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      font-size: 11px;
+      color: var(--muted);
+      border-radius: 8px;
+    }
+
+    .progress {
+      margin-top: 8px;
+      height: 5px;
+      background: #e7e9eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--green), var(--yellow));
+    }
+
+    .jump {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 9px 0 2px;
+      scrollbar-width: none;
+    }
+
+    .jump::-webkit-scrollbar { display: none; }
+    .jump a {
+      flex: 0 0 auto;
+      text-decoration: none;
+      color: var(--dark);
+      background: #eef2f3;
+      border: 1px solid #d7dde1;
+      padding: 6px 9px;
+      border-radius: 8px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 14px 12px 44px;
+    }
+
+    section {
+      min-height: calc(100svh - 96px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 26px 0;
+      border-bottom: 1px solid rgba(23, 32, 38, 0.1);
+    }
+
+    .slide {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: clamp(18px, 4vw, 34px);
+    }
+
+    .cover {
+      background:
+        linear-gradient(120deg, rgba(36,49,58,0.94), rgba(28,94,115,0.86)),
+        url("tools/pdfextract/keypages/page-29.png");
+      background-position: center;
+      background-size: cover;
+      color: #fff;
+      min-height: calc(100svh - 126px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 0;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--green);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .cover .eyebrow { color: #ffd166; }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      font-size: clamp(34px, 10vw, 72px);
+      line-height: 1.05;
+      font-weight: 900;
+      max-width: 12em;
+    }
+
+    h2 {
+      font-size: clamp(26px, 7vw, 48px);
+      line-height: 1.12;
+      margin-bottom: 14px;
+      font-weight: 900;
+      color: var(--dark);
+    }
+
+    .cover h2, .cover p, .cover strong { color: #fff; }
+
+    .lead {
+      font-size: clamp(17px, 4.2vw, 25px);
+      line-height: 1.55;
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    .cover .lead {
+      color: rgba(255,255,255,0.92);
+      margin-top: 20px;
+      max-width: 720px;
+    }
+
+    .meta {
+      display: grid;
+      gap: 8px;
+      margin-top: 22px;
+      color: rgba(255,255,255,0.9);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .stat {
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fbfcfc;
+      padding: 14px;
+      min-height: 112px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: clamp(28px, 8vw, 52px);
+      line-height: 1;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .stat.red strong { color: var(--red); }
+    .stat.green strong { color: var(--green); }
+    .stat.yellow strong { color: var(--yellow); }
+
+    .columns {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .note {
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fbfcfc;
+    }
+
+    .note h3 {
+      font-size: 17px;
+      margin-bottom: 8px;
+      color: var(--dark);
+    }
+
+    .note p,
+    .note li {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    ul, ol {
+      margin: 10px 0 0;
+      padding-left: 1.15em;
+    }
+
+    li + li { margin-top: 7px; }
+
+    .law-list {
+      display: grid;
+      gap: 9px;
+      margin-top: 18px;
+    }
+
+    .law {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 10px;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--blue);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .law b {
+      color: var(--blue);
+      font-size: 14px;
+      line-height: 1.3;
+    }
+
+    .law span {
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 15px;
+    }
+
+    .law.green { border-left-color: var(--green); }
+    .law.green b { color: var(--green); }
+    .law.red { border-left-color: var(--red); }
+    .law.red b { color: var(--red); }
+    .law.yellow { border-left-color: var(--yellow); }
+    .law.yellow b { color: #a66f00; }
+
+    .image-frame {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #e9ecef;
+    }
+
+    .image-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .caption {
+      padding: 9px 11px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .check {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 10px;
+      align-items: start;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .mark {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .check p {
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 15px;
+    }
+
+    .formula {
+      margin-top: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .formula div {
+      background: #f1f5f7;
+      border: 1px solid #d7e0e5;
+      border-radius: 8px;
+      padding: 12px;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1.45;
+    }
+
+    .source {
+      margin-top: 18px;
+      padding: 14px;
+      background: #fff8e7;
+      border: 1px solid #ead69d;
+      border-radius: 8px;
+      color: #5d4b14;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .footer-link {
+      display: inline-block;
+      margin-top: 14px;
+      color: var(--blue);
+      font-weight: 800;
+      word-break: break-all;
+    }
+
+    @media (min-width: 760px) {
+      main { padding-inline: 20px; }
+      .columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .cover { min-height: 620px; }
+    }
+
+    @media print {
+      .topbar { display: none; }
+      body { background: #fff; }
+      main { max-width: none; padding: 0; }
+      section { min-height: auto; page-break-after: always; padding: 0; }
+      .slide { box-shadow: none; border: 0; min-height: 100vh; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="title-row">
+        <div class="brand">淡水新市鎮水電工程｜消防法規原則</div>
+        <div class="date-pill">核對 115/06/03</div>
+      </div>
+      <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+      <nav class="jump" aria-label="簡報章節">
+        <a href="#cover">首頁</a>
+        <a href="#law">法規</a>
+        <a href="#upper">樓上</a>
+        <a href="#upper-common">2-10F</a>
+        <a href="#upper-sprinkler">11-14F</a>
+        <a href="#roof">屋頂</a>
+        <a href="#sprinkler">撒水</a>
+        <a href="#water">水源</a>
+        <a href="#smoke">排煙</a>
+        <a href="#smoke-b1f">B1排煙</a>
+        <a href="#smoke-start">啟動</a>
+        <a href="#smoke-natural">自然窗</a>
+        <a href="#fire-shutter">鐵捲門</a>
+        <a href="#power">消防電</a>
+        <a href="#radio">無線電</a>
+        <a href="#lighting">照明</a>
+        <a href="#site">現場</a>
+        <a href="#close">結論</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="cover">
+      <div class="slide cover">
+        <div>
+          <span class="eyebrow">地下室停車場｜濕式自動撒水系統</span>
+          <h1>本案消防法規原則與現場注意事項</h1>
+          <p class="lead">依變更核准消防圖與全國法規資料庫現行條文整理，供手機閱讀、會議說明與工地查核使用。</p>
+        </div>
+        <div class="meta">
+          <div>案場：麗源建設新北市淡水區新市段 34 地號集合住宅新建工程</div>
+          <div>圖面：變更核准 PDF 共 47 頁，重點頁為第 3、4、8、29 至 32 頁</div>
+          <div>法規：《各類場所消防安全設備設置標準》，修正日期 113/04/24，核對日 115/06/03</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="position">
+      <div class="slide">
+        <span class="eyebrow">01｜本案定位</span>
+        <h2>地下室 B4F 至 B1F 是室內停車空間</h2>
+        <p class="lead">本案應以丙類場所、地下室停車空間、濕式自動撒水設備作為主要檢討方向。重點不是單看水量，而是整套消防、避難、排煙、電源與現場可操作性。</p>
+        <div class="stats">
+          <div class="stat"><strong>B4-B1</strong><span>地下停車空間檢討範圍</span></div>
+          <div class="stat green"><strong>1268</strong><span>地下停車空間撒水頭</span></div>
+          <div class="stat yellow"><strong>440</strong><span>一般密閉式撒水頭</span></div>
+          <div class="stat red"><strong>1708</strong><span>全案撒水頭總數</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="law">
+      <div class="slide">
+        <span class="eyebrow">02｜會碰到的法規主軸</span>
+        <h2>先鎖定本案真正會用到的條文</h2>
+        <p class="lead">以全國法規資料庫現行條文為準，正式送審或查驗前需再次確認修正日期。</p>
+        <div class="law-list">
+          <div class="law"><b>第 12 條</b><span>室內停車場、建築物依法附設之室內停車空間，屬丙類場所。</span></div>
+          <div class="law green"><b>第 46 條</b><span>室內停車空間任一點至撒水頭水平距離應在 2.1m 以下。</span></div>
+          <div class="law red"><b>第 57-58 條</b><span>撒水水源依 20 分鐘計算；泵浦出水量以 90 L/min/顆核算。</span></div>
+          <div class="law yellow"><b>第 175-179 條</b><span>緊急照明設備之構造、配線、緊急電源、照度及免設規定。</span></div>
+          <div class="law"><b>第 180-187 條</b><span>連結送水管、消防專用蓄水池、採水口、送水設計壓力及水帶箱。</span></div>
+          <div class="law red"><b>第 188-190 條</b><span>排煙設備、防煙區劃、排煙口、排煙機、緊急電源及免設規定。</span></div>
+          <div class="law green"><b>第 192 條</b><span>無線電通信輔助設備，含洩波同軸電纜、接頭、保護箱及緊急電源。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="upper">
+      <div class="slide">
+        <span class="eyebrow">04｜地上層也要納入</span>
+        <h2>不是只講地下室，樓上層也會被查</h2>
+        <p class="lead">2F 至 14F 是集合住宅樓層，11F 至 14F 圖面另設一般撒水頭；消防栓、火警、緊急廣播、標示燈、緊急照明、連結送水管、緊急電源插座也要納入。</p>
+        <div class="stats">
+          <div class="stat"><strong>1F</strong><span>避難層、接近面、消防控制與送水/採水操作</span></div>
+          <div class="stat green"><strong>2-10F</strong><span>集合住宅一般樓層，消防栓、火警、廣播、照明</span></div>
+          <div class="stat yellow"><strong>11-14F</strong><span>每層約 110 顆一般撒水頭，合計 440 顆</span></div>
+          <div class="stat red"><strong>RF</strong><span>屋頂水箱、測試出水口、設備維修動線</span></div>
+        </div>
+        <div class="image-frame">
+          <img src="tools/pdfextract/keypages/page-33.png" alt="十一層撒水平面圖">
+          <div class="caption">變更核准圖第 33 頁：11F 撒水平面圖，代表樓上層也有撒水與消防設備配置要檢討。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="upper-common">
+      <div class="slide">
+        <span class="eyebrow">05｜2F 至 10F 集合住宅層</span>
+        <h2>一般住宅樓層重點在消防栓、警報、避難與搶救</h2>
+        <p class="lead">2F 至 10F 雖然不是地下停車場，但仍要檢討每層消防設備是否可用、可辨識、可操作，尤其消防隊上樓搶救時會使用的設備。</p>
+        <div class="checklist">
+          <div class="check"><span class="mark">1</span><p>室內消防栓箱位置、開門方向、前方操作空間、水帶、水槍、閥件及標示。</p></div>
+          <div class="check"><span class="mark">2</span><p>火警探測器、手動報警機、警鈴或緊急廣播分區，需與樓層及受信總機一致。</p></div>
+          <div class="check"><span class="mark">3</span><p>出口標示燈、避難方向指示燈、緊急照明，需能引導住戶往安全梯或避難層移動。</p></div>
+          <div class="check"><span class="mark">4</span><p>連結送水管出水口、緊急電源插座、水帶箱及相關標示不可被裝修或管線遮擋。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="upper-sprinkler">
+      <div class="slide">
+        <span class="eyebrow">06｜11F 至 14F 撒水層</span>
+        <h2>11F 以上有一般密閉式撒水頭</h2>
+        <p class="lead">圖例數量顯示 11F 至 14F 每層約 110 顆一般密閉式撒水頭，合計 440 顆。這些樓層要另外檢討撒水頭與室內格局、樑、天花、燈具、空調及裝修的關係。</p>
+        <div class="stats">
+          <div class="stat"><strong>11F</strong><span>一般撒水頭約 110 顆</span></div>
+          <div class="stat green"><strong>12F</strong><span>一般撒水頭約 110 顆</span></div>
+          <div class="stat yellow"><strong>13F</strong><span>一般撒水頭約 110 顆</span></div>
+          <div class="stat red"><strong>14F</strong><span>一般撒水頭約 110 顆</span></div>
+        </div>
+        <div class="checklist">
+          <div class="check"><span class="mark">1</span><p>室內隔間、玄關、走道、客廳、臥室、陽台側及管道間周邊要確認撒水覆蓋。</p></div>
+          <div class="check"><span class="mark">2</span><p>住戶裝修、天花板、空調室內機、燈槽、窗簾盒不可遮蔽撒水頭。</p></div>
+          <div class="check"><span class="mark">3</span><p>末端查驗、流水檢知、制水閥、泵浦能力及水源要能支援高樓層放水壓力。</p></div>
+        </div>
+        <div class="image-frame">
+          <img src="tools/pdfextract/keypages/page-33.png" alt="十一層撒水平面圖">
+          <div class="caption">變更核准圖第 33 頁：11F 撒水平面圖。11F-14F 是樓上層撒水檢討重點。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="roof">
+      <div class="slide">
+        <span class="eyebrow">07｜屋頂層與屋突</span>
+        <h2>屋頂不是結束點，是消防測試與維修點</h2>
+        <p class="lead">屋頂層要看消防水箱、測試出水口、連結送水管、泵浦或管路末端、設備維修動線，以及緊急電源與防水防蝕。</p>
+        <div class="columns">
+          <div class="note">
+            <h3>消防水</h3>
+            <p>屋頂消防水箱、水位、補水、溢流、排水、人孔及水位警報要可維修。</p>
+          </div>
+          <div class="note">
+            <h3>測試出水口</h3>
+            <p>屋頂測試出水口需可到達、可開啟、可排水，標示要清楚。</p>
+          </div>
+          <div class="note">
+            <h3>連結送水管</h3>
+            <p>最高層送水壓力、放水測試、水帶箱及出水口位置要確認。</p>
+          </div>
+          <div class="note">
+            <h3>維修安全</h3>
+            <p>屋突設備、電源、防水、防蝕、照明及維修動線要納入竣工查核。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="equipment">
+      <div class="slide">
+        <span class="eyebrow">08｜本案會被查的系統</span>
+        <h2>不能只看撒水，消防查驗是整套系統</h2>
+        <div class="columns">
+          <div class="note">
+            <h3>滅火設備</h3>
+            <p>滅火器、室內消防栓、自動撒水設備、消防水源、消防泵浦、送水口。</p>
+          </div>
+          <div class="note">
+            <h3>警報設備</h3>
+            <p>火警自動警報、手動報警、緊急廣播、流水檢知訊號及受信總機分區。</p>
+          </div>
+          <div class="note">
+            <h3>避難逃生</h3>
+            <p>出口標示燈、避難方向指示燈、緊急照明設備，地下室要特別注意暗角。</p>
+          </div>
+          <div class="note">
+            <h3>消防搶救</h3>
+            <p>連結送水管、排煙設備、緊急電源插座、無線電通信輔助設備。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sprinkler">
+      <div class="slide">
+        <span class="eyebrow">09｜自動撒水配置原則</span>
+        <h2>地下停車場核心是 2.1m 與障礙物</h2>
+        <p class="lead">撒水頭位置不能只照圖面點位，施工後還要看梁、風管、橋架、燈具、排煙管及車道淨高。</p>
+        <div class="checklist">
+          <div class="check"><span class="mark">1</span><p>任一點至撒水頭水平距離 2.1m 以下。</p></div>
+          <div class="check"><span class="mark">2</span><p>撒水頭迴水板下方 45cm 內、水平 30cm 內保持淨空。</p></div>
+          <div class="check"><span class="mark">3</span><p>風管等障礙物寬度超過 120cm，下方需重新檢討撒水保護。</p></div>
+          <div class="check"><span class="mark">4</span><p>柱邊、坡道口、車道轉角、機房外側、樓梯間旁要逐區套圖。</p></div>
+        </div>
+        <div class="image-frame">
+          <img src="tools/pdfextract/keypages/page-29.png" alt="地下四層撒水平面圖">
+          <div class="caption">變更核准圖第 29 頁：B4F 撒水平面圖，可用來說明停車空間撒水配置方式。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="water">
+      <div class="slide">
+        <span class="eyebrow">10｜消防水與採水口</span>
+        <h2>水源、送水、採水口要分開檢討</h2>
+        <div class="formula">
+          <div>室內消防栓：150 L/min x 2 支 x 20 分鐘 = 6T</div>
+          <div>自動撒水：90 L/min x 15 顆 x 20 分鐘 = 27T</div>
+          <div>消防水源需求合計：6T + 27T = 33T</div>
+          <div>筏基消防水池有效容量：104.02T，圖面採 104T</div>
+        </div>
+        <div class="columns">
+          <div class="note">
+            <h3>消防水源</h3>
+            <p>104T 大於 33T，水源容量符合本案需求。</p>
+          </div>
+          <div class="note">
+            <h3>採水口</h3>
+            <p>若作消防專用蓄水池採水使用，104T 屬 40T 以上至未滿 120T，採水口原則需 2 個以上。</p>
+          </div>
+          <div class="note">
+            <h3>連結送水管</h3>
+            <p>出水口、送水口、屋頂測試出水口、水帶箱與送水設計壓力都要獨立查核。</p>
+          </div>
+          <div class="note">
+            <h3>現場重點</h3>
+            <p>有效水量、吸水口、連通口、補水、水位警報、人孔及清洗孔都要能維修。</p>
+          </div>
+        </div>
+        <div class="image-frame">
+          <img src="tools/pdfextract/keypages/page-04.png" alt="設備設置說明與水池計算">
+          <div class="caption">變更核准圖第 4 頁：設備設置說明與地下筏基消防水源容量檢討。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="smoke">
+      <div class="slide">
+        <span class="eyebrow">11｜排煙設備</span>
+        <h2>排煙要獨立查，不能只寫防火區劃</h2>
+        <p class="lead">本案排煙要分兩套看：地上層以自然排煙窗為主，地下層以機械排煙為主。地下室火災時，撒水是抑制火勢，排煙是維持避難與搶救環境。</p>
+        <div class="law-list">
+          <div class="law"><b>500 m²</b><span>每層樓地板面積每 500 平方公尺內，以防煙壁區劃。</span></div>
+          <div class="law green"><b>30m</b><span>防煙區劃內任一位置至排煙口水平距離在 30m 以下。</span></div>
+          <div class="law red"><b>30 分鐘</b><span>排煙機、排煙口、進風口及進風機需接緊急電源並有效動作。</span></div>
+          <div class="law yellow"><b>連動</b><span>排煙口開啟時，排煙機啟動，並連動停止空調及通風設備。</span></div>
+        </div>
+        <div class="checklist">
+          <div class="check"><span class="mark">1</span><p>排煙風管貫穿防火區劃需設防火閘門，貫穿部位要具防火時效。</p></div>
+          <div class="check"><span class="mark">2</span><p>特別安全梯、緊急昇降機間排煙室要確認排煙、進風及防火門完整。</p></div>
+          <div class="check"><span class="mark">3</span><p>排煙風管最容易跟撒水頭、橋架、燈具、車道淨高衝突，施工前要套圖。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="smoke-b1f">
+      <div class="slide">
+        <span class="eyebrow">12｜B1F 機械排煙馬達</span>
+        <h2>B1F 排煙機圖面採 10HP</h2>
+        <p class="lead">依變更核准圖第 40 頁 B1F 排煙平面圖，B1F 排煙系統每台風機設計風量 300 CMM、靜壓 40 mmAq，馬力計算約 6.3HP，圖面採用 10HP。</p>
+        <div class="stats">
+          <div class="stat"><strong>300</strong><span>CMM，每台排煙風量</span></div>
+          <div class="stat green"><strong>40</strong><span>mmAq，採用靜壓</span></div>
+          <div class="stat yellow"><strong>10HP</strong><span>圖面採用馬力</span></div>
+          <div class="stat red"><strong>4 台</strong><span>B1F 排煙風機數量</span></div>
+        </div>
+        <div class="media-frame">
+          <img src="tools/pdfextract/keypages/page-40.png" alt="B1F 排煙平面圖及排煙機馬力計算">
+          <div class="caption">圖面核對：第 40 頁 B1F 排煙平面圖，風量 300 CMM、靜壓 40 mmAq、計算 6.3HP、採 10HP。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="smoke-start">
+      <div class="slide">
+        <span class="eyebrow">13｜排煙啟動原理</span>
+        <h2>排煙不是單機啟動，是火警連動程序</h2>
+        <div class="checklist">
+          <div class="check"><span class="mark">1</span><p>偵煙探測器動作或現場手動開關操作，火警受信總機或排煙控制盤接收分區訊號。</p></div>
+          <div class="check"><span class="mark">2</span><p>對應防煙區劃的排煙口、排煙閘門或風門先開啟，開啟訊號回傳控制盤。</p></div>
+          <div class="check"><span class="mark">3</span><p>排煙口開啟後，對應排煙機啟動；若有進風機或補風風門，也要依設計同步動作。</p></div>
+          <div class="check"><span class="mark">4</span><p>排煙口開啟時，相關空調與一般通風設備應停止，避免把煙擴散到其他區域。</p></div>
+          <div class="check"><span class="mark">5</span><p>停電時由緊急電源供電，排煙機、控制盤、風門及回授訊號需可維持 30 分鐘以上。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="smoke-natural">
+      <div class="slide">
+        <span class="eyebrow">14｜地上層自然排煙窗</span>
+        <h2>自然排煙窗要看有效開口與開啟控制</h2>
+        <p class="lead">地上層採自然排煙窗時，重點不是只有窗戶面積，而是該防煙區劃內能不能有效排到戶外，且火警時能自動或手動打開。</p>
+        <div class="law-list">
+          <div class="law"><b>2%</b><span>自然排煙口有效開口面積原則上須達防煙區劃面積 2% 以上。</span></div>
+          <div class="law green"><b>30m</b><span>防煙區劃內任一點到排煙口水平距離應在 30m 以下。</span></div>
+          <div class="law yellow"><b>80cm</b><span>排煙口宜設於天花板或其下方 80cm 範圍內，高位排煙才有效。</span></div>
+          <div class="law red"><b>連動</b><span>需有手動開關及探測器連動自動開啟裝置。</span></div>
+        </div>
+        <div class="checklist">
+          <div class="check"><span class="mark">1</span><p>動作原理：偵煙或手動訊號送至控制盤，電動開窗器或釋放裝置打開排煙窗，熱煙由高位開口排至戶外。</p></div>
+          <div class="check"><span class="mark">2</span><p>若使用電動開窗器，需確認消防控制電源、緊急供電、開閉回授、現場手動操作及復歸方式。</p></div>
+          <div class="check"><span class="mark">3</span><p>現場要核對窗外不得被外牆格柵、招牌、管線、百葉或後續裝修擋住；有效開口要用實際可開角度計算。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="fire-shutter">
+      <div class="slide">
+        <span class="eyebrow">15｜B4F / B1F 車道防火鐵捲門</span>
+        <h2>車道口是防火、防煙與排煙連動的交界</h2>
+        <p class="lead">B4F 與 B1F 車道設防火鐵捲門時，目的在火災時完成坡道及樓層間防火區劃，避免煙熱沿車道快速串層。</p>
+        <div class="checklist">
+          <div class="check"><span class="mark">1</span><p>連動原理：火警分區訊號或現場啟動後，防火鐵捲門依控制邏輯下降，形成防火區劃；現場需可手動操作及復歸。</p></div>
+          <div class="check"><span class="mark">2</span><p>要確認捲門下降不會阻斷人員避難方向，防夾、安全停止、警示聲光、手動開關位置都要現場測。</p></div>
+          <div class="check"><span class="mark">3</span><p>排煙連動要跟捲門順序一起檢討，避免捲門先關死後，把補風、排煙路徑或消防隊進入路徑一起切斷。</p></div>
+          <div class="check"><span class="mark">4</span><p>竣工測試需留下火警訊號、捲門下降、排煙口開啟、排煙機啟動、空調通風停止與復歸紀錄。</p></div>
+        </div>
+        <div class="media-frame">
+          <img src="tools/pdfextract/keypages/page-37.png" alt="B4F 排煙平面圖與車道區域">
+          <div class="caption">圖面核對：B4F 與 B1F 車道口需把防火鐵捲門、防煙區劃、排煙口及車道淨空一起套圖。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pump">
+      <div class="slide">
+        <span class="eyebrow">16｜泵浦、配管、送水口</span>
+        <h2>採購與查驗不能只看馬力</h2>
+        <div class="stats">
+          <div class="stat"><strong>1350</strong><span>LPM，自動撒水泵浦流量</span></div>
+          <div class="stat green"><strong>142M</strong><span>泵浦揚程</span></div>
+          <div class="stat yellow"><strong>75kW</strong><span>約 100HP 等級</span></div>
+          <div class="stat red"><strong>STPG</strong><span>CNS 4626 / SCH40</span></div>
+        </div>
+        <div class="checklist">
+          <div class="check"><span class="mark">1</span><p>泵浦型錄需核對流量、揚程、性能曲線、控制盤及啟動電流。</p></div>
+          <div class="check"><span class="mark">2</span><p>撒水配管材料進場需核對 STPG、CNS 4626、SCH40、管厚及出廠證明。</p></div>
+          <div class="check"><span class="mark">3</span><p>送水口需設於消防車易接近處，標示與送水壓力範圍要清楚。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="power">
+      <div class="slide">
+        <span class="eyebrow">17｜消防電與控制</span>
+        <h2>消防水靠電源與連動才會真的動</h2>
+        <p class="lead">消防泵浦、排煙機、火警、緊急廣播、緊急照明、標示燈、緊急電源插座與無線電，都要檢討緊急供電及控制回路。</p>
+        <div class="checklist">
+          <div class="check"><span class="mark">1</span><p>消防設備電源需專用回路，不得與一般電路混接，開關需明顯標示。</p></div>
+          <div class="check"><span class="mark">2</span><p>常用電源斷電時，應自動切換至緊急供電；常用電源恢復時應可復歸。</p></div>
+          <div class="check"><span class="mark">3</span><p>緊急電源插座各層至少二回路以上，專用回路不得設漏電斷路器。</p></div>
+          <div class="check"><span class="mark">4</span><p>測試要含發電機、ATS、泵浦控制盤、排煙控制、火警受信總機及防災中心訊號。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="radio">
+      <div class="slide">
+        <span class="eyebrow">18｜無線電通信輔助設備</span>
+        <h2>消防隊進地下室要能通訊</h2>
+        <p class="lead">本案圖面已有消防無線電相關平面圖，地下室、避難層與消防隊接近面都要納入竣工實測。</p>
+        <div class="law-list">
+          <div class="law"><b>150 MHz</b><span>洩波同軸電纜需適合傳送或輻射 150MHz 或主管機關指定周波數。</span></div>
+          <div class="law green"><b>50 Ω</b><span>洩波同軸電纜標稱阻抗為 50 歐姆，並需耐燃處理。</span></div>
+          <div class="law red"><b>30 分鐘</b><span>若設增輻器，其緊急電源需可有效動作 30 分鐘以上。</span></div>
+          <div class="law yellow"><b>0.8-1.5m</b><span>消防隊專用無線電接頭高度需在 0.8m 至 1.5m 間。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="lighting">
+      <div class="slide">
+        <span class="eyebrow">19｜緊急照明</span>
+        <h2>地下室避難不能只靠出口標示燈</h2>
+        <p class="lead">車位區、車道、坡道、樓梯入口、排煙室、防火門前後及通往避難層路徑，都要看緊急照明是否連續。</p>
+        <div class="law-list">
+          <div class="law yellow"><b>30 分鐘</b><span>緊急電源容量需能使緊急照明有效動作 30 分鐘以上。</span></div>
+          <div class="law"><b>10 Lux</b><span>地下建築物之地下通道，地板面照度應達 10 Lux 以上。</span></div>
+          <div class="law green"><b>2 Lux</b><span>其他場所地面水平面照度應達 2 Lux 以上。</span></div>
+          <div class="law red"><b>實測</b><span>地下室轉角、坡道、柱後與機房外通道要用照度計確認，不能只看圖。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="site">
+      <div class="slide">
+        <span class="eyebrow">20｜工地最容易出問題</span>
+        <h2>地下室消防成敗在機電套圖</h2>
+        <div class="checklist">
+          <div class="check"><span class="mark">1</span><p>排煙風管與撒水頭互相打架，容易造成撒水遮蔽或車道淨高不足。</p></div>
+          <div class="check"><span class="mark">2</span><p>橋架、排水管、燈具與標誌後續加上去，可能遮住撒水頭或緊急照明。</p></div>
+          <div class="check"><span class="mark">3</span><p>消防栓箱、手報、末端查驗閥、制水閥前方不可畫車位或被設備擋住。</p></div>
+          <div class="check"><span class="mark">4</span><p>採水口、緊急電源插座、無線電接頭、排煙控制開關都要能看、能開、能測、能維修。</p></div>
+          <div class="check"><span class="mark">5</span><p>竣工圖、標單、設備型錄、現場照片、測試紀錄要一致。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="inspection">
+      <div class="slide">
+        <span class="eyebrow">21｜竣工查驗前</span>
+        <h2>用「能看、能開、能測、能修」檢查</h2>
+        <div class="columns">
+          <div class="note">
+            <h3>資料</h3>
+            <ul>
+              <li>變更核准圖、竣工圖、設備數量表</li>
+              <li>水源計算、泵浦揚程、水力計算</li>
+              <li>採水口、排煙、無線電、緊急電源插座、緊急照明圖說</li>
+            </ul>
+          </div>
+          <div class="note">
+            <h3>測試</h3>
+            <ul>
+              <li>撒水試壓、沖洗、末端查驗</li>
+              <li>泵浦啟動、流量、壓力、電流</li>
+              <li>火警、排煙、緊急電源、無線電、照明 30 分鐘</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="close">
+      <div class="slide">
+        <span class="eyebrow">22｜結論</span>
+        <h2>本案對外說明主軸</h2>
+        <div class="checklist">
+          <div class="check"><span class="mark">1</span><p>本案依法規與變更核准圖設置，地下停車空間採濕式自動撒水系統。</p></div>
+          <div class="check"><span class="mark">2</span><p>撒水配置以 2.1m 原則及障礙物淨空作為現場查核核心。</p></div>
+          <div class="check"><span class="mark">3</span><p>水源需求 33T，筏基消防水池有效容量 104.02T，容量足夠。</p></div>
+          <div class="check"><span class="mark">4</span><p>地上層消防栓、撒水、火警、廣播、緊急照明、連結送水管、緊急電源插座也要納入。</p></div>
+          <div class="check"><span class="mark">5</span><p>泵浦、配管、送水口、採水口、排煙、無線電、緊急電源及緊急照明需完整測試。</p></div>
+        </div>
+        <div class="source">
+          法規已於 115/06/03 以全國法規資料庫核對；當時《各類場所消防安全設備設置標準》修正日期為 113/04/24。正式送審、會議或竣工查驗前，應再確認當日現行條文。
+          <br>
+          <a class="footer-link" href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=D0120029">全國法規資料庫：各類場所消防安全設備設置標準</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const bar = document.getElementById("progressBar");
+    const setProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0;
+      bar.style.width = pct + "%";
+    };
+    window.addEventListener("scroll", setProgress, { passive: true });
+    window.addEventListener("resize", setProgress);
+    setProgress();
+  </script>
+</body>
+</html>

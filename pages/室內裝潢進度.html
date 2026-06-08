@@ -1,0 +1,131 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>淡水新市鎮室內裝潢進度</title>
+  <style>
+    :root { --ink:#1d2622; --muted:#65736d; --line:#d8e2dc; --bg:#f6f8f6; --panel:#fff; --green:#1f7a57; --amber:#b36b12; --soft:#edf3ef; --soft-amber:#fff2d6; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--bg); font-family:"Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif; line-height:1.45; }
+    header { padding:22px clamp(16px,3vw,36px) 16px; background:#fff; border-bottom:1px solid var(--line); }
+    .title-row { display:flex; justify-content:space-between; align-items:end; gap:16px; flex-wrap:wrap; }
+    h1 { margin:0; font-size:clamp(24px,3vw,34px); letter-spacing:0; }
+    .meta { color:var(--muted); font-size:14px; }
+    main { padding:20px clamp(16px,3vw,36px) 36px; }
+    .toolbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:0 0 18px; }
+    .nav-link, input, select, button { min-height:38px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); padding:8px 10px; font:inherit; }
+    .nav-link { display:inline-flex; align-items:center; text-decoration:none; }
+    input { flex:1; min-width:min(360px,100%); }
+    button { cursor:pointer; }
+    button:hover, .nav-link:hover { background:var(--soft); }
+    .summary { display:grid; grid-template-columns:repeat(5,minmax(150px,1fr)); gap:12px; margin-bottom:18px; }
+    .metric { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px; min-height:96px; }
+    .metric small { display:block; color:var(--muted); margin-bottom:6px; }
+    .metric strong { display:block; font-size:18px; margin-bottom:6px; }
+    .metric span { color:var(--muted); font-size:13px; }
+    section { margin-top:18px; background:var(--panel); border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+    .section-head { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid var(--line); background:#fbfcfb; }
+    h2 { margin:0; font-size:18px; letter-spacing:0; }
+    .section-head p { margin:0; color:var(--muted); font-size:14px; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; min-width:980px; font-size:14px; }
+    th, td { padding:10px 12px; border-bottom:1px solid #edf1ee; text-align:left; vertical-align:top; }
+    th { position:sticky; top:0; background:#f3f7f4; color:#34423d; z-index:1; }
+    tr:hover td { background:#fbfcfb; }
+    .tag { display:inline-flex; min-height:24px; align-items:center; border-radius:999px; padding:3px 8px; font-size:13px; white-space:nowrap; background:var(--soft-amber); color:#8a540c; }
+    .empty { color:var(--muted); }
+    @media (max-width:900px) { .summary { grid-template-columns:repeat(2,minmax(160px,1fr)); } }
+    @media (max-width:560px) { .summary { grid-template-columns:1fr; } .section-head { align-items:flex-start; flex-direction:column; } input,select,button,.nav-link { width:100%; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title-row">
+      <div>
+        <h1>淡水新市鎮室內裝潢進度</h1>
+        <div class="meta">先建立空白專項：隔間、給排水、消防、強電、弱電；後續依現場進度補日期與工項</div>
+      </div>
+      <div class="meta">建立日：2026/06/04</div>
+    </div>
+  </header>
+  <main>
+    <div class="toolbar">
+      <a class="nav-link" href="營建水電整合排程.html">整合排程</a>
+      <a class="nav-link" href="水電進度排程.html">最新水電進度</a>
+      <a class="nav-link" href="地下室進度.html">地下室進度</a>
+      <a class="nav-link" href="五大管線申請進度.html">五大管線申請</a>
+      <input id="search" type="search" placeholder="搜尋系統、樓層、工項、備註">
+      <select id="systemFilter" aria-label="系統篩選"><option value="all">全部系統</option></select>
+      <button id="reset">清除</button>
+    </div>
+
+    <div class="summary" id="summary"></div>
+
+    <section>
+      <div class="section-head">
+        <h2>室內裝潢專項進度表</h2>
+        <p id="rowCount"></p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>狀態</th>
+              <th>系統</th>
+              <th>樓層/區域</th>
+              <th>工項</th>
+              <th>開始</th>
+              <th>完成</th>
+              <th>負責/配合</th>
+              <th>備註</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    const tasks = [
+      { system:"隔間", area:"", item:"", start:"", end:"", owner:"", note:"待排" },
+      { system:"給排水", area:"", item:"", start:"", end:"", owner:"", note:"待排" },
+      { system:"消防", area:"", item:"", start:"", end:"", owner:"", note:"待排" },
+      { system:"消防", area:"", item:"箱體進場", start:"", end:"", owner:"", note:"待排" },
+      { system:"消防", area:"", item:"箱體中版", start:"", end:"", owner:"", note:"待排" },
+      { system:"消防", area:"", item:"面板", start:"", end:"", owner:"", note:"待排" },
+      { system:"強電", area:"", item:"", start:"", end:"", owner:"", note:"待排" },
+      { system:"強電", area:"", item:"箱體進場", start:"", end:"", owner:"", note:"待排" },
+      { system:"強電", area:"", item:"箱體中版", start:"", end:"", owner:"", note:"待排" },
+      { system:"強電", area:"", item:"面板", start:"", end:"", owner:"", note:"待排" },
+      { system:"弱電", area:"", item:"", start:"", end:"", owner:"", note:"待排" }
+    ];
+    function filteredTasks() {
+      const keyword = document.querySelector("#search").value.trim().toLowerCase();
+      const system = document.querySelector("#systemFilter").value;
+      return tasks.filter(task => {
+        const text = `${task.system} ${task.area} ${task.item} ${task.owner} ${task.note}`.toLowerCase();
+        return (system === "all" || task.system === system) && (!keyword || text.includes(keyword));
+      });
+    }
+    function renderSummary() {
+      document.querySelector("#summary").innerHTML = tasks.map(task => `<div class="metric"><small>${task.system}</small><strong>待排</strong><span>尚未填入日期與工項</span></div>`).join("");
+    }
+    function renderSystemFilter() {
+      const systems = [...new Set(tasks.map(task => task.system))];
+      document.querySelector("#systemFilter").innerHTML += systems.map(system => `<option value="${system}">${system}</option>`).join("");
+    }
+    function renderTable() {
+      const rows = filteredTasks();
+      document.querySelector("#rowCount").textContent = `目前顯示 ${rows.length} 筆`;
+      document.querySelector("#scheduleBody").innerHTML = rows.map(task => `<tr><td><span class="tag">待排</span></td><td>${task.system}</td><td class="empty">${task.area || "待填"}</td><td class="empty">${task.item || "待填"}</td><td class="empty">${task.start || "待填"}</td><td class="empty">${task.end || "待填"}</td><td class="empty">${task.owner || "待填"}</td><td>${task.note}</td></tr>`).join("");
+    }
+    document.querySelector("#search").addEventListener("input", renderTable);
+    document.querySelector("#systemFilter").addEventListener("change", renderTable);
+    document.querySelector("#reset").addEventListener("click", () => { document.querySelector("#search").value = ""; document.querySelector("#systemFilter").value = "all"; renderTable(); });
+    renderSummary();
+    renderSystemFilter();
+    renderTable();
+  </script>
+</body>
+</html>

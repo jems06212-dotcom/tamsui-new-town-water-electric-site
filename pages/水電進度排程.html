@@ -1,0 +1,1390 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>淡水新市鎮最新水電進度排程</title>
+  <style>
+    :root { --ink:#1d2622; --muted:#64736c; --line:#d8e2dc; --bg:#f6f8f6; --panel:#fff; --green:#1f7a57; --teal:#176f75; --amber:#b36b12; --red:#b6423a; --soft:#edf3ef; --soft-amber:#fff2d6; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--bg); font-family:"Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif; line-height:1.45; }
+    header { padding:22px clamp(16px,3vw,36px) 16px; background:#fff; border-bottom:1px solid var(--line); }
+    .title-row { display:flex; justify-content:space-between; align-items:end; gap:16px; flex-wrap:wrap; }
+    h1 { margin:0; font-size:clamp(24px,3vw,34px); letter-spacing:0; }
+    .meta { color:var(--muted); font-size:14px; }
+    main { padding:20px clamp(16px,3vw,36px) 36px; }
+    .summary { display:grid; grid-template-columns:repeat(4,minmax(180px,1fr)); gap:12px; margin-bottom:18px; }
+    .metric { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px; min-height:110px; }
+    .metric small { display:block; color:var(--muted); margin-bottom:6px; }
+    .metric strong { display:block; font-size:21px; line-height:1.25; margin-bottom:7px; }
+    .metric span { color:var(--muted); font-size:14px; }
+    .toolbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:18px 0; }
+    input, select, button, .nav-link { min-height:38px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); padding:8px 10px; font:inherit; }
+    input { flex:1; min-width:min(360px,100%); }
+    button { cursor:pointer; }
+    .nav-link { display:inline-flex; align-items:center; text-decoration:none; }
+    button:hover, .nav-link:hover { background:var(--soft); }
+    .lead-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; padding:16px; }
+    .lead-card { border:1px solid var(--line); border-radius:8px; padding:12px; background:#fff; }
+    .lead-card strong { display:block; font-size:16px; margin-bottom:6px; }
+    .lead-card span { display:block; color:var(--muted); font-size:13px; }
+    .lead-card.alert { border-color:#e1b86d; background:#fff8e8; }
+    .lead-card.alert strong { color:#8a540c; }
+    section { margin-top:18px; background:var(--panel); border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+    .section-head { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid var(--line); background:#fbfcfb; }
+    h2 { margin:0; font-size:18px; letter-spacing:0; }
+    .section-head p { margin:0; color:var(--muted); font-size:14px; }
+    .timeline { padding:12px 16px 18px; overflow-x:auto; }
+    .time-row { display:grid; grid-template-columns:210px minmax(620px,1fr) 112px; gap:12px; align-items:center; min-width:960px; padding:8px 0; border-bottom:1px solid #edf1ee; }
+    .time-row:last-child { border-bottom:0; }
+    .task-name { font-weight:700; font-size:14px; }
+    .task-date { color:var(--muted); font-size:13px; text-align:right; }
+    .bar-track { position:relative; height:22px; background:#edf2ef; border-radius:999px; overflow:hidden; }
+    .bar { position:absolute; top:0; bottom:0; min-width:2px; border-radius:999px; background:var(--teal); }
+    .bar.site { background:var(--amber); }
+    .today-line { position:absolute; top:-4px; bottom:-4px; width:2px; background:var(--red); }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; min-width:980px; font-size:14px; }
+    th, td { padding:10px 12px; border-bottom:1px solid #edf1ee; text-align:left; vertical-align:top; }
+    th { position:sticky; top:0; background:#f3f7f4; color:#34423d; z-index:1; }
+    tr:hover td { background:#fbfcfb; }
+    .tag { display:inline-flex; min-height:24px; align-items:center; border-radius:999px; padding:3px 8px; font-size:13px; white-space:nowrap; background:#e5f3eb; color:#176244; }
+    .tag.site { background:var(--soft-amber); color:#8a540c; }
+    @media (max-width:900px) { .summary { grid-template-columns:repeat(2,minmax(160px,1fr)); } }
+    @media (max-width:560px) { .summary { grid-template-columns:1fr; } .section-head { align-items:flex-start; flex-direction:column; } input,select,button,.nav-link { width:100%; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title-row">
+      <div>
+        <h1>淡水新市鎮最新水電進度排程</h1>
+        <div class="meta">來源：淡水新市段進度表.xlsx / 工作表：灌漿排程；另納入現場回報更新</div>
+      </div>
+      <div class="meta">基準日：2026/06/01</div>
+    </div>
+  </header>
+  <main>
+    <div class="summary" id="summary"></div>
+    <div class="toolbar">
+      <a class="nav-link" href="營建水電整合排程.html">整合排程</a>
+      <a class="nav-link" href="地下室進度.html">地下室進度</a>
+      <a class="nav-link" href="室內裝潢進度.html">室內裝潢進度</a>
+      <a class="nav-link" href="五大管線申請進度.html">五大管線申請</a>
+      <input id="search" type="search" placeholder="搜尋樓層、配管、放樣、管料、查驗">
+      <select id="phaseFilter" aria-label="樓層篩選"><option value="all">全部樓層</option></select>
+      <button id="reset">清除</button>
+    </div>
+    <section>
+      <div class="section-head"><h2>長交期備料提醒</h2><p>依現場備料經驗先列提醒，開關箱列為立即叫料</p></div>
+      <div class="lead-grid">
+        <div class="lead-card"><strong>發電機</strong><span>備料期 9 個月至 1 年，需提早確認規格、廠牌、容量及送審。</span></div>
+        <div class="lead-card"><strong>消防泵浦</strong><span>備料期 6 至 9 個月；分撒水泵、消防泵。另 R2F 設消防水箱 2T，需併同確認水箱基礎、管路、液位警報及泵浦銜接。</span></div>
+        <div class="lead-card alert"><strong>開關箱</strong><span>備料期 3 個月，現在要叫；分受電箱、大公盤體、小公盤體、戶內盤體/戶配盤體。戶配盤體：2F-14F，A棟 A1-A6、B棟 B1-B6；2F 無 B1、B2 戶。</span></div>
+        <div class="lead-card"><strong>減壓閥</strong><span>備料期 1 至 3 個月，需確認樓層壓力分區與閥件口徑。</span></div>
+        <div class="lead-card"><strong>特殊閥類</strong><span>備料期 3 至 9 個月，先確認材質、壓力等級、法蘭規格與替代品。</span></div>
+      </div>
+    </section>
+    <section>
+      <div class="section-head"><h2>近期水電甘特視圖</h2><p>顯示 2026/03 至 2027/08 水電、消防、消檢合格與使照節點</p></div>
+      <div class="timeline" id="timeline"></div>
+    </section>
+    <section>
+      <div class="section-head"><h2>最新水電進度表</h2><p id="rowCount"></p></div>
+      <div class="table-wrap">
+        <table><thead><tr><th>來源</th><th>樓層/階段</th><th>工項</th><th>開始</th><th>完成</th><th>工期</th><th>備註</th></tr></thead><tbody id="scheduleBody"></tbody></table>
+      </div>
+    </section>
+  </main>
+  <script>
+    const tasks = [
+    {
+        "main":  "大底到B4FL",
+        "detail":  "筏基接地",
+        "start":  "2025-05-07",
+        "end":  "2025-05-12",
+        "days":  6,
+        "note":  "打接地5日+1日查驗；此階段總工期縮減三十日，補足停工時程",
+        "mep":  "查驗：打接地5日+1日查驗；此階段總工期縮減三十日，補足停工時程",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "連通管施做",
+        "start":  "2025-05-25",
+        "end":  "2025-05-28",
+        "days":  4,
+        "note":  "4日",
+        "mep":  "管線預埋：4日",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "BS板組模",
+        "start":  "2025-06-09",
+        "end":  "2025-06-12",
+        "days":  4,
+        "note":  "板面水電管材進料，水電護壁及排水進場施作",
+        "mep":  "水電配合、管料/材料、管線預埋：板面水電管材進料，水電護壁及排水進場施作",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "BS板進鋼筋，吊料",
+        "start":  "2025-06-13",
+        "end":  "2025-06-13",
+        "days":  1,
+        "note":  "水電材料下樓板",
+        "mep":  "水電配合、管料/材料：水電材料下樓板",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "BS板筋綁紮，水電配管",
+        "start":  "2025-06-14",
+        "end":  "2025-06-18",
+        "days":  5,
+        "note":  "B4F樓板配管，18、19日查驗",
+        "mep":  "水電配合、配管、查驗：B4F樓板配管，18、19日查驗",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B4FL牆面",
+        "detail":  "養護3日",
+        "start":  "2025-06-20",
+        "end":  "2025-06-22",
+        "days":  3,
+        "note":  "臨時水電及照明上昇暫時置放",
+        "mep":  "水電配合、臨水電/照明：臨時水電及照明上昇暫時置放",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B4FL牆面",
+        "detail":  "BS放樣",
+        "start":  "2025-06-22",
+        "end":  "2025-06-22",
+        "days":  1,
+        "note":  "凌晨放樣，不影響進度",
+        "mep":  "放樣：凌晨放樣，不影響進度",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B4FL牆面",
+        "detail":  "鋼筋吊料/綁紮/續接",
+        "start":  "2025-06-30",
+        "end":  "2025-07-02",
+        "days":  3,
+        "note":  "",
+        "mep":  "",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B4FL牆面",
+        "detail":  "牆面模組立/水電配管/樑板筋進料",
+        "start":  "2025-07-03",
+        "end":  "2025-07-14",
+        "days":  12,
+        "note":  "水電牆面放樣/施作/0705連通管清管/0712樑板筋進料",
+        "mep":  "水電配合、配管、放樣、管線預埋：水電牆面放樣/施作/0705連通管清管/0712樑板筋進料",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "半牆灌漿",
+        "start":  "2025-07-15",
+        "end":  "2025-07-16",
+        "days":  2,
+        "note":  "水電板面放樣",
+        "mep":  "水電配合、放樣：水電板面放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "樑板模板組立/水電板放樣",
+        "start":  "2025-07-16",
+        "end":  "2025-07-19",
+        "days":  4,
+        "note":  "200米/水電放樣",
+        "mep":  "水電配合、放樣：200米/水電放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "板面鋼筋綁紮/水電配管",
+        "start":  "2025-07-19",
+        "end":  "2025-07-28",
+        "days":  10,
+        "note":  "水電板面配管/B4F顧模照明安裝/B3F照明上移/臨時盤電上移",
+        "mep":  "水電配合、配管、臨水電/照明：水電板面配管/B4F顧模照明安裝/B3F照明上移/臨時盤電上移",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "板面灌漿",
+        "start":  "2025-07-29",
+        "end":  "2025-07-29",
+        "days":  1,
+        "note":  "約900米/晚上放樣",
+        "mep":  "放樣：約900米/晚上放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "續接施工/半牆止水帶/0808模板拆板支撐",
+        "start":  "2025-08-11",
+        "end":  "2025-08-14",
+        "days":  4,
+        "note":  "版面臨時水上移(1\"管)/柱位放樣/配管",
+        "mep":  "配管、放樣、臨水電/照明：版面臨時水上移(1\"管)/柱位放樣/配管",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "半牆組立/水電牆面配管/車道、水箱鋼筋綁紮/拆樑支撐",
+        "start":  "2025-08-15",
+        "end":  "2025-08-19",
+        "days":  5,
+        "note":  "拆模後水電清B4F出口/拉線",
+        "mep":  "水電配合、配管：拆模後水電清B4F出口/拉線",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "B3FL模及樑板組立",
+        "start":  "2025-08-16",
+        "end":  "2025-08-21",
+        "days":  6,
+        "note":  "70米/水電版面管路叫料",
+        "mep":  "水電配合：70米/水電版面管路叫料",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B2FL版面",
+        "detail":  "B2FL鋼筋進料",
+        "start":  "2025-08-19",
+        "end":  "2025-08-19",
+        "days":  1,
+        "note":  "水電版面管路進料",
+        "mep":  "水電配合：水電版面管路進料",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B2FL版面",
+        "detail":  "B2FL鋼筋樑板吊料/綁紮/水電版面配管",
+        "start":  "2025-08-22",
+        "end":  "2025-08-27",
+        "days":  6,
+        "note":  "水電板面配管",
+        "mep":  "水電配合、配管：水電板面配管",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B2FL版面",
+        "detail":  "續接吊料9/8 續接施工9/9     半牆止水帶9/10",
+        "start":  "2025-09-07",
+        "end":  "2025-09-11",
+        "days":  5,
+        "note":  "水電柱面配管/水箱牆面預留管",
+        "mep":  "水電配合、配管：水電柱面配管/水箱牆面預留管",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B2FL版面",
+        "detail":  "柱面/半牆/水箱/組模    車道鋼筋綁紮",
+        "start":  "2025-09-12",
+        "end":  "2025-09-16",
+        "days":  5,
+        "note":  "9/16車道配管，水箱封頂配管",
+        "mep":  "配管：9/16車道配管，水箱封頂配管",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "車道止水條+接著劑",
+        "start":  "2025-09-18",
+        "end":  "2025-09-18",
+        "days":  1,
+        "note":  "水電放樣",
+        "mep":  "水電配合、放樣：水電放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "半牆澆置(300米)",
+        "start":  "2025-09-19",
+        "end":  "2025-09-19",
+        "days":  1,
+        "note":  "水電放樣",
+        "mep":  "水電配合、放樣：水電放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1F板筋進料",
+        "start":  "2025-09-20",
+        "end":  "2025-09-20",
+        "days":  1,
+        "note":  "水電放樣",
+        "mep":  "水電配合、放樣：水電放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1FL板筋吊料/水電配管",
+        "start":  "2025-09-22",
+        "end":  "2025-09-29",
+        "days":  8,
+        "note":  "水電版面配管",
+        "mep":  "水電配合、配管：水電版面配管",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1F柱牆+車道/續接進吊料",
+        "start":  "2025-10-04",
+        "end":  "2025-10-06",
+        "days":  3,
+        "note":  "",
+        "mep":  "",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1F續接分料/綁紮",
+        "start":  "2025-10-14",
+        "end":  "2025-10-17",
+        "days":  4,
+        "note":  "柱牆配管/管洗洞配管",
+        "mep":  "配管、管線預埋：柱牆配管/管洗洞配管",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1F半牆組模/水電配管/車道組模",
+        "start":  "2025-10-18",
+        "end":  "2025-10-22",
+        "days":  5,
+        "note":  "柱牆配管",
+        "mep":  "水電配合、配管：柱牆配管",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1F車道灌漿/鋼筋進料",
+        "start":  "2025-10-21",
+        "end":  "2025-10-22",
+        "days":  2,
+        "note":  "50米/水電放樣",
+        "mep":  "水電配合、放樣：50米/水電放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "1F",
+        "detail":  "B1F梁模板組立/         半牆澆置(10/29)",
+        "start":  "2025-10-23",
+        "end":  "2025-10-30",
+        "days":  8,
+        "note":  "300米/水電放樣",
+        "mep":  "水電配合、放樣：300米/水電放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "1F",
+        "detail":  "B1F梁吊料/綁紮/水電配管",
+        "start":  "2025-10-30",
+        "end":  "2025-11-08",
+        "days":  10,
+        "note":  "水電配管",
+        "mep":  "水電配合、配管：水電配管",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "1F",
+        "detail":  "1F汙水管洗洞施作",
+        "start":  "2025-11-14",
+        "end":  "2025-11-17",
+        "days":  4,
+        "note":  "",
+        "mep":  "管線預埋：1F汙水管洗洞施作",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "1F",
+        "detail":  "周邊圍籬拆除",
+        "start":  "2025-11-19",
+        "end":  "2025-11-23",
+        "days":  5,
+        "note":  "配合圍籬拆除，臨時電臨時水改路徑",
+        "mep":  "臨水電/照明：配合圍籬拆除，臨時電臨時水改路徑",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "1F",
+        "detail":  "GL+-0打石/景觀防水施作/景觀水電放樣",
+        "start":  "2025-11-24",
+        "end":  "2025-12-22",
+        "days":  29,
+        "note":  "施作後配合鋪面放樣，配管定位",
+        "mep":  "水電配合、配管、放樣：施作後配合鋪面放樣，配管定位",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "1F",
+        "detail":  "周邊水溝施作/排水及廢水壓力管平頂預埋",
+        "start":  "2025-11-28",
+        "end":  "2025-12-23",
+        "days":  26,
+        "note":  "約3-4周",
+        "mep":  "管線預埋：約3-4周",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "1F",
+        "detail":  "台電、電信、汙水排放及引進管施作",
+        "start":  "2025-12-06",
+        "end":  "2025-12-11",
+        "days":  6,
+        "note":  "5天完成",
+        "mep":  "管線預埋：5天完成",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "1F",
+        "detail":  "圍籬恢復/景觀壓層施作/水電景觀配管/1F回填土",
+        "start":  "2025-12-12",
+        "end":  "2026-01-24",
+        "days":  44,
+        "note":  "43天進度壓層灌好，尚未回填土",
+        "mep":  "水電配合、配管：43天進度壓層灌好，尚未回填土",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "1MF",
+        "detail":  "1MF樓板鷹架吊料及施工",
+        "start":  "2025-12-13",
+        "end":  "2025-12-14",
+        "days":  2,
+        "note":  "",
+        "mep":  "",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "1MF",
+        "detail":  "1MF水電配管",
+        "start":  "2025-12-15",
+        "end":  "2025-12-18",
+        "days":  4,
+        "note":  "",
+        "mep":  "水電配合、配管：1MF水電配管",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "2FL",
+        "detail":  "2F底板放樣",
+        "start":  "2026-01-15",
+        "end":  "2026-02-13",
+        "days":  30,
+        "note":  "水電放樣",
+        "mep":  "水電配合、放樣：水電放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "2FL",
+        "detail":  "水電配管/鋼筋綁紮",
+        "start":  "2026-03-11",
+        "end":  "2026-03-16",
+        "days":  6,
+        "note":  "",
+        "mep":  "水電配合、配管：水電配管/鋼筋綁紮",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "2FL",
+        "detail":  "市府勘驗",
+        "start":  "2026-03-17",
+        "end":  "2026-03-17",
+        "days":  1,
+        "note":  "",
+        "mep":  "查驗：市府勘驗",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "2FL",
+        "detail":  "標高器/水電收尾",
+        "start":  "2026-03-18",
+        "end":  "2026-03-18",
+        "days":  1,
+        "note":  "",
+        "mep":  "水電配合：標高器/水電收尾",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "2F柱牆",
+        "detail":  "鷹架升架/鋼筋吊料",
+        "start":  "2026-03-20",
+        "end":  "2026-03-20",
+        "days":  1,
+        "note":  "",
+        "mep":  "",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "2F柱牆",
+        "detail":  "牆板組立/水電配牆",
+        "start":  "2026-03-23",
+        "end":  "2026-03-27",
+        "days":  5,
+        "note":  "管料預計27日進場 樑套管/RC版面管料",
+        "mep":  "水電配合、管料/材料：管料預計27日進場 樑套管/RC版面管料",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "2F柱牆",
+        "detail":  "樑板鋼筋進料",
+        "start":  "2026-03-27",
+        "end":  "2026-03-27",
+        "days":  1,
+        "note":  "配合RC管料進料",
+        "mep":  "管料/材料：配合RC管料進料",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "2F柱牆",
+        "detail":  "樑組立",
+        "start":  "2026-03-28",
+        "end":  "2026-03-31",
+        "days":  4,
+        "note":  "4/1放樣",
+        "mep":  "放樣：4/1放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "3FL",
+        "detail":  "鋼筋綁紮/水電放樣配管",
+        "start":  "2026-04-01",
+        "end":  "2026-04-08",
+        "days":  8,
+        "note":  "4/7日4F柱筋進料",
+        "mep":  "水電配合、配管、放樣：4/7日4F柱筋進料",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "3FL",
+        "detail":  "拆模/鷹架吊料+搭棚架",
+        "start":  "2026-04-10",
+        "end":  "2026-04-12",
+        "days":  3,
+        "note":  "",
+        "mep":  "",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "3F柱牆",
+        "detail":  "牆板組立/水電配牆",
+        "start":  "2026-04-15",
+        "end":  "2026-04-20",
+        "days":  6,
+        "note":  "4/15 4F樓板PVC管進料/5~7F開關箱進料",
+        "mep":  "水電配合、管料/材料：4/15 4F樓板PVC管進料/5~7F開關箱進料",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "3F柱牆",
+        "detail":  "樑組立/水電放樣4/23",
+        "start":  "2026-04-19",
+        "end":  "2026-04-22",
+        "days":  4,
+        "note":  "",
+        "mep":  "水電配合、放樣：樑組立/水電放樣4/23",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "4FL",
+        "detail":  "鋼筋綁紮/水電放樣配管",
+        "start":  "2026-04-23",
+        "end":  "2026-04-29",
+        "days":  7,
+        "note":  "24日早上先吊B棟",
+        "mep":  "水電配合、配管、放樣：24日早上先吊B棟",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "4FL",
+        "detail":  "牆板組立/水電配牆",
+        "start":  "2026-05-03",
+        "end":  "2026-05-07",
+        "days":  5,
+        "note":  "5/8 5FL PVC管進料",
+        "mep":  "水電配合、管料/材料：5/8 5FL PVC管進料",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "5FL",
+        "detail":  "樑模組立/水電放樣5/11",
+        "start":  "2026-05-08",
+        "end":  "2026-05-11",
+        "days":  4,
+        "note":  "5/10日下午開始放樣",
+        "mep":  "水電配合、放樣：5/10日下午開始放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "5FL",
+        "detail":  "5/12樑板鋼筋吊料、樑板筋綁紮、水電配管",
+        "start":  "2026-05-12",
+        "end":  "2026-05-18",
+        "days":  7,
+        "note":  "5/15 版面配管",
+        "mep":  "水電配合、配管：5/15 版面配管",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "5FL",
+        "detail":  "鷹架吊料+昇架",
+        "start":  "2026-05-20",
+        "end":  "2026-05-21",
+        "days":  2,
+        "note":  "",
+        "mep":  "",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "5FL",
+        "detail":  "牆板組立/水電配牆",
+        "start":  "2026-05-24",
+        "end":  "2026-05-28",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合：牆板組立/水電配牆",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "6FL",
+        "detail":  "樑組立/水電放樣6/01",
+        "start":  "2026-05-28",
+        "end":  "2026-06-01",
+        "days":  5,
+        "note":  "5/30 禮拜日水電開始放樣",
+        "mep":  "水電配合、放樣：5/30 禮拜日水電開始放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "6FL",
+        "detail":  "樑板筋吊料",
+        "start":  "2026-06-01",
+        "end":  "2026-06-01",
+        "days":  1,
+        "note":  "現場回報：今日鋼筋已提前吊料，銜接版面水電配管",
+        "mep":  "水電配合、配管：現場回報：今日鋼筋已提前吊料，銜接版面水電配管",
+        "source":  "灌漿排程＋現場更新"
+    },
+    {
+        "main":  "長交期備料",
+        "detail":  "R2F消防水箱2T叫料",
+        "start":  "2026-06-01",
+        "end":  "2026-06-01",
+        "days":  1,
+        "note":  "R2F 設消防水箱 2T。需確認水箱材質、尺寸、基礎、補水/溢流/排水、液位警報與消防泵浦銜接。",
+        "mep":  "消防設備/材料：消防泵浦備料期6至9個月，需提早送審與確認設備規格。",
+        "source":  "長交期備料提醒"
+    },
+    {
+        "main":  "長交期備料",
+        "detail":  "大公盤體叫料",
+        "start":  "2026-06-01",
+        "end":  "2026-06-01",
+        "days":  1,
+        "note":  "開關箱分項：大公盤體。先確認公共用電負載、消防/弱電介面、主幹路徑、箱體尺寸及迴路編號。",
+        "mep":  "管料/材料：開關箱備料期3個月，現在要叫。",
+        "source":  "長交期備料提醒"
+    },
+    {
+        "main":  "長交期備料",
+        "detail":  "小公盤體叫料",
+        "start":  "2026-06-01",
+        "end":  "2026-06-01",
+        "days":  1,
+        "note":  "開關箱分項：小公盤體。先確認各層公共區域迴路、照明/插座/設備負載、弱電消防介面及箱體位置。",
+        "mep":  "管料/材料：開關箱備料期3個月，現在要叫。",
+        "source":  "長交期備料提醒"
+    },
+    {
+        "main":  "長交期備料",
+        "detail":  "戶內盤體/戶配盤體叫料",
+        "start":  "2026-06-01",
+        "end":  "2026-06-01",
+        "days":  1,
+        "note":  "戶配盤體範圍：2F-14F，A棟 A1-A6、B棟 B1-B6；2F 沒有 B1、B2 戶。先依戶別清冊核對迴路數、盤體尺寸及弱電/消防介面。",
+        "mep":  "管料/材料：開關箱備料期3個月，現在要叫。",
+        "source":  "長交期備料提醒"
+    },
+    {
+        "main":  "長交期備料",
+        "detail":  "受電箱叫料",
+        "start":  "2026-06-01",
+        "end":  "2026-06-01",
+        "days":  1,
+        "note":  "開關箱分項：受電箱。先確認台電受電方式、主幹容量、CT/PT、保護協調、箱體尺寸及送審資料。",
+        "mep":  "管料/材料：開關箱備料期3個月，現在要叫。",
+        "source":  "長交期備料提醒"
+    },
+    {
+        "main":  "長交期備料",
+        "detail":  "消防泵叫料",
+        "start":  "2026-06-01",
+        "end":  "2026-06-01",
+        "days":  1,
+        "note":  "消防泵浦分項：消防泵。備料期6至9個月，需確認揚程、流量、控制盤、啟動方式、消防送審型錄及泵浦基礎。",
+        "mep":  "消防設備/材料：消防泵浦備料期6至9個月，需提早送審與確認設備規格。",
+        "source":  "長交期備料提醒"
+    },
+    {
+        "main":  "長交期備料",
+        "detail":  "開關箱叫料總表",
+        "start":  "2026-06-01",
+        "end":  "2026-06-01",
+        "days":  1,
+        "note":  "開關箱備料期約3個月，現場判定現在要叫；分項含受電箱、大公盤體、小公盤體、戶內盤體及戶配盤體，先彙整單線圖、箱體尺寸、迴路、弱電/消防介面及送審資料。",
+        "mep":  "管料/材料：開關箱備料期3個月，現在要叫。",
+        "source":  "長交期備料提醒"
+    },
+    {
+        "main":  "長交期備料",
+        "detail":  "撒水泵叫料",
+        "start":  "2026-06-01",
+        "end":  "2026-06-01",
+        "days":  1,
+        "note":  "消防泵浦分項：撒水泵。備料期6至9個月，需確認揚程、流量、控制盤、啟動方式、消防送審型錄及泵浦基礎。",
+        "mep":  "消防設備/材料：消防泵浦備料期6至9個月，需提早送審與確認設備規格。",
+        "source":  "長交期備料提醒"
+    },
+    {
+        "main":  "6FL",
+        "detail":  "鋼筋綁紮/水電放樣配管",
+        "start":  "2026-06-02",
+        "end":  "2026-06-07",
+        "days":  6,
+        "note":  "",
+        "mep":  "水電配合、配管、放樣：鋼筋綁紮/水電放樣配管",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "6FL",
+        "detail":  "鷹架吊料+昇架",
+        "start":  "2026-06-09",
+        "end":  "2026-06-11",
+        "days":  3,
+        "note":  "",
+        "mep":  "",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "6FL",
+        "detail":  "牆板組立/水電配牆",
+        "start":  "2026-06-13",
+        "end":  "2026-06-17",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合：牆板組立/水電配牆",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "7FL",
+        "detail":  "樑組立/水電放樣",
+        "start":  "2026-06-19",
+        "end":  "2026-06-23",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合、放樣：樑組立/水電放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "7FL",
+        "detail":  "樑板筋吊料",
+        "start":  "2026-06-24",
+        "end":  "2026-06-24",
+        "days":  1,
+        "note":  "",
+        "mep":  "",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "7FL",
+        "detail":  "鋼筋綁紮/水電放樣配管",
+        "start":  "2026-06-24",
+        "end":  "2026-06-29",
+        "days":  6,
+        "note":  "",
+        "mep":  "水電配合、配管、放樣：鋼筋綁紮/水電放樣配管",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "7FL",
+        "detail":  "鷹架吊料+昇架",
+        "start":  "2026-06-30",
+        "end":  "2026-07-02",
+        "days":  3,
+        "note":  "",
+        "mep":  "",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "7FL",
+        "detail":  "牆板組立/水電配牆",
+        "start":  "2026-07-04",
+        "end":  "2026-07-08",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合：牆板組立/水電配牆",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "8FL",
+        "detail":  "樑組立/水電放樣",
+        "start":  "2026-07-10",
+        "end":  "2026-07-14",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合、放樣：樑組立/水電放樣",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "8FL",
+        "detail":  "樑板筋吊料",
+        "start":  "2026-07-15",
+        "end":  "2026-07-15",
+        "days":  1,
+        "note":  "",
+        "mep":  "",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "8FL",
+        "detail":  "鋼筋綁紮/水電放樣配管",
+        "start":  "2026-07-15",
+        "end":  "2026-07-20",
+        "days":  6,
+        "note":  "",
+        "mep":  "水電配合、配管、放樣：鋼筋綁紮/水電放樣配管",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "8FL",
+        "detail":  "鷹架吊料+昇架",
+        "start":  "2026-07-21",
+        "end":  "2026-07-23",
+        "days":  3,
+        "note":  "",
+        "mep":  "",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "8FL",
+        "detail":  "牆板組立/水電配牆",
+        "start":  "2026-07-25",
+        "end":  "2026-07-29",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合：牆板組立/水電配牆",
+        "source":  "灌漿排程"
+    },
+    {
+        "main":  "9FL",
+        "detail":  "樑組立/水電放樣",
+        "start":  "2026-08-07",
+        "end":  "2026-08-11",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合、放樣：樑組立/水電放樣",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "9FL",
+        "detail":  "樑板筋吊料",
+        "start":  "2026-08-12",
+        "end":  "2026-08-12",
+        "days":  1,
+        "note":  "",
+        "mep":  "",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "9FL",
+        "detail":  "鋼筋綁紮/水電放樣配管",
+        "start":  "2026-08-12",
+        "end":  "2026-08-17",
+        "days":  6,
+        "note":  "9FL灌漿(601米)",
+        "mep":  "水電配合、配管、放樣：9FL灌漿(601米)",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "9FL",
+        "detail":  "鷹架吊料+昇架",
+        "start":  "2026-08-18",
+        "end":  "2026-08-20",
+        "days":  3,
+        "note":  "",
+        "mep":  "",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "9FL",
+        "detail":  "牆板組立/水電配牆",
+        "start":  "2026-08-22",
+        "end":  "2026-08-26",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合：牆板組立/水電配牆",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "10FL",
+        "detail":  "樑組立/水電放樣",
+        "start":  "2026-08-25",
+        "end":  "2026-08-29",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合、放樣：樑組立/水電放樣",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "9FL",
+        "detail":  "10F樑板/鋼筋進料",
+        "start":  "2026-08-27",
+        "end":  "2026-08-27",
+        "days":  1,
+        "note":  "銜接下一層樑板、水電放樣及配管備料",
+        "mep":  "水電配合、配管、放樣：銜接下一層樑板、水電放樣及配管備料",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "10FL",
+        "detail":  "樑板筋吊料",
+        "start":  "2026-08-30",
+        "end":  "2026-08-30",
+        "days":  1,
+        "note":  "",
+        "mep":  "",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "10FL",
+        "detail":  "鋼筋綁紮/水電放樣配管",
+        "start":  "2026-08-30",
+        "end":  "2026-09-04",
+        "days":  6,
+        "note":  "10FL灌漿(601米)",
+        "mep":  "水電配合、配管、放樣：10FL灌漿(601米)",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "10FL",
+        "detail":  "鷹架吊料+昇架",
+        "start":  "2026-09-05",
+        "end":  "2026-09-07",
+        "days":  3,
+        "note":  "",
+        "mep":  "",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "10FL",
+        "detail":  "牆板組立/水電配牆",
+        "start":  "2026-09-09",
+        "end":  "2026-09-13",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合：牆板組立/水電配牆",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "11FL",
+        "detail":  "樑組立/水電放樣",
+        "start":  "2026-09-12",
+        "end":  "2026-09-16",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合、放樣：樑組立/水電放樣",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "10FL",
+        "detail":  "11F樑板/鋼筋進料",
+        "start":  "2026-09-14",
+        "end":  "2026-09-14",
+        "days":  1,
+        "note":  "銜接下一層樑板、水電放樣及配管備料",
+        "mep":  "水電配合、配管、放樣：銜接下一層樑板、水電放樣及配管備料",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "11FL",
+        "detail":  "樑板筋吊料",
+        "start":  "2026-09-17",
+        "end":  "2026-09-17",
+        "days":  1,
+        "note":  "",
+        "mep":  "",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "11FL",
+        "detail":  "鋼筋綁紮/水電放樣配管",
+        "start":  "2026-09-17",
+        "end":  "2026-09-22",
+        "days":  6,
+        "note":  "11FL灌漿(601米)",
+        "mep":  "水電配合、配管、放樣：11FL灌漿(601米)",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "11FL",
+        "detail":  "鷹架吊料+昇架",
+        "start":  "2026-09-23",
+        "end":  "2026-09-25",
+        "days":  3,
+        "note":  "",
+        "mep":  "",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "11FL",
+        "detail":  "牆板組立/水電配牆",
+        "start":  "2026-09-27",
+        "end":  "2026-10-01",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合：牆板組立/水電配牆",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "12FL",
+        "detail":  "樑組立/水電放樣",
+        "start":  "2026-09-30",
+        "end":  "2026-10-04",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合、放樣：樑組立/水電放樣",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "11FL",
+        "detail":  "12F樑板/鋼筋進料",
+        "start":  "2026-10-02",
+        "end":  "2026-10-02",
+        "days":  1,
+        "note":  "銜接下一層樑板、水電放樣及配管備料",
+        "mep":  "水電配合、配管、放樣：銜接下一層樑板、水電放樣及配管備料",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "12FL",
+        "detail":  "樑板筋吊料",
+        "start":  "2026-10-05",
+        "end":  "2026-10-05",
+        "days":  1,
+        "note":  "",
+        "mep":  "",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "12FL",
+        "detail":  "鋼筋綁紮/水電放樣配管",
+        "start":  "2026-10-05",
+        "end":  "2026-10-10",
+        "days":  6,
+        "note":  "12FL灌漿(601米)",
+        "mep":  "水電配合、配管、放樣：12FL灌漿(601米)",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "12FL",
+        "detail":  "鷹架吊料+昇架",
+        "start":  "2026-10-11",
+        "end":  "2026-10-13",
+        "days":  3,
+        "note":  "",
+        "mep":  "",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "12FL",
+        "detail":  "牆板組立/水電配牆",
+        "start":  "2026-10-15",
+        "end":  "2026-10-19",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合：牆板組立/水電配牆",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "13FL",
+        "detail":  "樑組立/水電放樣",
+        "start":  "2026-10-18",
+        "end":  "2026-10-22",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合、放樣：樑組立/水電放樣",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "12FL",
+        "detail":  "13F樑板/鋼筋進料",
+        "start":  "2026-10-20",
+        "end":  "2026-10-20",
+        "days":  1,
+        "note":  "銜接下一層樑板、水電放樣及配管備料",
+        "mep":  "水電配合、配管、放樣：銜接下一層樑板、水電放樣及配管備料",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "13FL",
+        "detail":  "樑板筋吊料",
+        "start":  "2026-10-23",
+        "end":  "2026-10-23",
+        "days":  1,
+        "note":  "",
+        "mep":  "",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "13FL",
+        "detail":  "鋼筋綁紮/水電放樣配管",
+        "start":  "2026-10-23",
+        "end":  "2026-10-28",
+        "days":  6,
+        "note":  "13FL灌漿(601米)",
+        "mep":  "水電配合、配管、放樣：13FL灌漿(601米)",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "13FL",
+        "detail":  "鷹架吊料+昇架",
+        "start":  "2026-10-29",
+        "end":  "2026-10-31",
+        "days":  3,
+        "note":  "",
+        "mep":  "",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "13FL",
+        "detail":  "牆板組立/水電配牆",
+        "start":  "2026-11-02",
+        "end":  "2026-11-06",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合：牆板組立/水電配牆",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "14FL",
+        "detail":  "樑組立/水電放樣",
+        "start":  "2026-11-05",
+        "end":  "2026-11-09",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合、放樣：樑組立/水電放樣",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "13FL",
+        "detail":  "14F樑板/鋼筋進料",
+        "start":  "2026-11-07",
+        "end":  "2026-11-07",
+        "days":  1,
+        "note":  "銜接下一層樑板、水電放樣及配管備料",
+        "mep":  "水電配合、配管、放樣：銜接下一層樑板、水電放樣及配管備料",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "14FL",
+        "detail":  "樑板筋吊料",
+        "start":  "2026-11-10",
+        "end":  "2026-11-10",
+        "days":  1,
+        "note":  "",
+        "mep":  "",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "14FL",
+        "detail":  "鋼筋綁紮/水電放樣配管",
+        "start":  "2026-11-10",
+        "end":  "2026-11-15",
+        "days":  6,
+        "note":  "14FL灌漿(015米)",
+        "mep":  "水電配合、配管、放樣：14FL灌漿(015米)",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "14FL",
+        "detail":  "鷹架吊料+昇架",
+        "start":  "2026-11-16",
+        "end":  "2026-11-18",
+        "days":  3,
+        "note":  "",
+        "mep":  "",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "14FL",
+        "detail":  "牆板組立/水電配牆",
+        "start":  "2026-11-20",
+        "end":  "2026-11-24",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合：牆板組立/水電配牆",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "RF",
+        "detail":  "樑組立/水電放樣",
+        "start":  "2026-11-23",
+        "end":  "2026-11-27",
+        "days":  5,
+        "note":  "",
+        "mep":  "水電配合、放樣：樑組立/水電放樣",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "14FL",
+        "detail":  "RF樑板/鋼筋進料",
+        "start":  "2026-11-25",
+        "end":  "2026-11-25",
+        "days":  1,
+        "note":  "銜接下一層樑板、水電放樣及配管備料",
+        "mep":  "水電配合、配管、放樣：銜接下一層樑板、水電放樣及配管備料",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "RF",
+        "detail":  "樑板筋吊料",
+        "start":  "2026-11-28",
+        "end":  "2026-11-28",
+        "days":  1,
+        "note":  "",
+        "mep":  "",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "RF",
+        "detail":  "鋼筋綁紮/水電放樣配管",
+        "start":  "2026-11-28",
+        "end":  "2026-12-03",
+        "days":  6,
+        "note":  "RFL灌漿(016米)",
+        "mep":  "水電配合、配管、放樣：RFL灌漿(016米)",
+        "source":  "4F-6F循環推估"
+    },
+    {
+        "main":  "RF",
+        "detail":  "RF灌漿完成/上梁基準",
+        "start":  "2026-12-03",
+        "end":  "2026-12-03",
+        "days":  1,
+        "note":  "合約消防檢查以RF灌漿完成後三個月起算。",
+        "mep":  "消防檢查：合約消防檢查以RF灌漿完成後三個月起算。",
+        "source":  "灌漿排程＋合約條件"
+    },
+    {
+        "main":  "消防檢查",
+        "detail":  "消防檢查",
+        "start":  "2027-03-03",
+        "end":  "2027-03-03",
+        "days":  1,
+        "note":  "合約說明：於上梁後(RF灌漿完)三個月辦理消防檢查；基準日2026/12/03，三個月後為2027/03/03。",
+        "mep":  "消防檢查：合約說明：於上梁後(RF灌漿完)三個月辦理消防檢查；基準日2026/12/03，三個月後為2027/03/03。",
+        "source":  "合約條件"
+    },
+    {
+        "main":  "消防檢查",
+        "detail":  "消檢合格",
+        "start":  "2027-06-30",
+        "end":  "2027-06-30",
+        "days":  1,
+        "note":  "排程專案新增：2027年6月消檢要合格；作為消防檢查後續改善、複查及核可期限。",
+        "mep":  "消防檢查：2027年6月消檢合格期限",
+        "source":  "使用者指定"
+    },
+    {
+        "main":  "使照",
+        "detail":  "使照取得",
+        "start":  "2027-08-31",
+        "end":  "2027-08-31",
+        "days":  1,
+        "note":  "排程專案新增：2027年8月使照取得；消檢合格後銜接使照申請、補正及領照作業。",
+        "mep":  "使照前置：消檢合格後銜接使照取得",
+        "source":  "使用者指定"
+    }
+];
+    const reportDate = new Date("2026-06-01T00:00:00+08:00");
+    function parseDate(value) { return new Date(`${value}T00:00:00+08:00`); }
+    function formatDate(value) { return value.replaceAll("-", "/"); }
+    function dayDiff(a,b) { return Math.round((parseDate(b) - parseDate(a)) / 86400000); }
+    function isToday(task) { return parseDate(task.start) <= reportDate && parseDate(task.end) >= reportDate; }
+    function isSite(task) { return task.source === "現場更新"; }
+    function filteredTasks() {
+      const keyword = document.querySelector("#search").value.trim().toLowerCase();
+      const phase = document.querySelector("#phaseFilter").value;
+      return tasks.filter(task => {
+        const text = `${task.main} ${task.detail} ${task.note} ${task.source}`.toLowerCase();
+        return (phase === "all" || task.main === phase) && (!keyword || text.includes(keyword));
+      });
+    }
+    function renderSummary() {
+      const today = tasks.filter(isToday);
+      const next = tasks.filter(task => parseDate(task.start) > reportDate).sort((a,b) => parseDate(a.start) - parseDate(b.start))[0];
+      const future = tasks.filter(task => parseDate(task.start) > reportDate).length;
+      const site = tasks.filter(isSite).length;
+      const summary = [
+        { label:"今日水電重點", value:today.map(task => task.detail).join("、") || "無", hint:"依 2026/06/01 與現場更新" },
+        { label:"下一工項", value:next ? next.detail : "無", hint:next ? `${formatDate(next.start)} 開始` : "" },
+        { label:"後續水電節點", value:`${future} 筆`, hint:"含配管、放樣、管料、查驗" },
+        { label:"現場更新", value:`${site} 筆`, hint:"今日鋼筋提前吊料已納入" }
+      ];
+      document.querySelector("#summary").innerHTML = summary.map(item => `<div class="metric"><small>${item.label}</small><strong>${item.value}</strong><span>${item.hint}</span></div>`).join("");
+    }
+    function renderPhaseFilter() {
+      const phases = [...new Set(tasks.map(task => task.main))];
+      document.querySelector("#phaseFilter").innerHTML += phases.map(phase => `<option value="${phase}">${phase}</option>`).join("");
+    }
+    function renderTimeline(list) {
+      const from = "2026-03-01";
+      const to = "2027-08-31";
+      const total = Math.max(dayDiff(from, to), 1);
+      const todayLeft = Math.max(0, Math.min(100, dayDiff(from, "2026-06-01") / total * 100));
+      document.querySelector("#timeline").innerHTML = list.filter(task => parseDate(task.end) >= parseDate(from) && parseDate(task.start) <= parseDate(to)).map(task => {
+        const startOffset = Math.max(0, dayDiff(from, task.start));
+        const endOffset = Math.min(total, dayDiff(from, task.end));
+        const left = Math.max(0, Math.min(100, startOffset / total * 100));
+        const width = Math.max(1.2, (endOffset - startOffset + 1) / total * 100);
+        const cls = isSite(task) ? "site" : "";
+        return `<div class="time-row"><div class="task-name">${task.main}｜${task.detail}</div><div class="bar-track"><div class="bar ${cls}" style="left:${left}%;width:${width}%"></div><div class="today-line" style="left:${todayLeft}%"></div></div><div class="task-date">${formatDate(task.start)}<br>${formatDate(task.end)}</div></div>`;
+      }).join("");
+    }
+    function renderTable() {
+      const rows = filteredTasks();
+      document.querySelector("#rowCount").textContent = `目前顯示 ${rows.length} 筆`;
+      document.querySelector("#scheduleBody").innerHTML = rows.map(task => {
+        const cls = isSite(task) ? "site" : "";
+        return `<tr><td><span class="tag ${cls}">${task.source}</span></td><td>${task.main}</td><td><strong>${task.detail}</strong></td><td>${formatDate(task.start)}</td><td>${formatDate(task.end)}</td><td>${task.days} 天</td><td>${task.note || ""}</td></tr>`;
+      }).join("");
+      renderTimeline(rows);
+    }
+    document.querySelector("#search").addEventListener("input", renderTable);
+    document.querySelector("#phaseFilter").addEventListener("change", renderTable);
+    document.querySelector("#reset").addEventListener("click", () => { document.querySelector("#search").value = ""; document.querySelector("#phaseFilter").value = "all"; renderTable(); });
+    renderSummary();
+    renderPhaseFilter();
+    renderTable();
+  </script>
+</body>
+</html>
+
+
+
+
+
+

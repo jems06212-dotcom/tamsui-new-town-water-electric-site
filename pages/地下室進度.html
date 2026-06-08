@@ -1,0 +1,683 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>淡水新市鎮地下室進度</title>
+  <style>
+    :root {
+      --ink:#1f2623; --muted:#63706b; --line:#d9e1dd; --bg:#f6f8f6; --panel:#fff;
+      --green:#1f7a57; --teal:#166f75; --amber:#b36b12; --red:#b6423a; --soft:#edf3ef;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--bg); font-family:"Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif; line-height:1.45; }
+    header { padding:22px clamp(16px,3vw,36px) 16px; background:#fff; border-bottom:1px solid var(--line); }
+    .title-row { display:flex; justify-content:space-between; align-items:end; gap:16px; flex-wrap:wrap; }
+    h1 { margin:0; font-size:clamp(24px,3vw,34px); letter-spacing:0; }
+    .meta { color:var(--muted); font-size:14px; }
+    main { padding:20px clamp(16px,3vw,36px) 36px; }
+    .summary { display:grid; grid-template-columns:repeat(4,minmax(180px,1fr)); gap:12px; margin-bottom:18px; }
+    .metric { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px; min-height:106px; }
+    .metric small { display:block; color:var(--muted); margin-bottom:6px; }
+    .metric strong { display:block; font-size:21px; line-height:1.25; margin-bottom:7px; }
+    .metric span { color:var(--muted); font-size:14px; }
+    .toolbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:18px 0; }
+    input, select, button, .nav-link { min-height:38px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); padding:8px 10px; font:inherit; }
+    input { flex:1; min-width:min(360px,100%); }
+    button { cursor:pointer; }
+    .nav-link { display:inline-flex; align-items:center; text-decoration:none; }
+    .nav-link:hover { background:var(--soft); }
+    button:hover { background:var(--soft); }
+    section { margin-top:18px; background:var(--panel); border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+    .section-head { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid var(--line); background:#fbfcfb; }
+    h2 { margin:0; font-size:18px; letter-spacing:0; }
+    .section-head p { margin:0; color:var(--muted); font-size:14px; }
+    .phase-grid { display:grid; grid-template-columns:repeat(4,minmax(180px,1fr)); gap:12px; padding:16px; }
+    .phase { border:1px solid var(--line); border-radius:8px; padding:12px; background:#fff; }
+    .phase strong { display:block; font-size:17px; margin-bottom:6px; }
+    .phase span { display:block; color:var(--muted); font-size:13px; }
+    .timeline { padding:12px 16px 18px; overflow-x:auto; }
+    .time-row { display:grid; grid-template-columns:210px minmax(620px,1fr) 112px; gap:12px; align-items:center; min-width:960px; padding:8px 0; border-bottom:1px solid #edf1ee; }
+    .time-row:last-child { border-bottom:0; }
+    .task-name { font-weight:700; font-size:14px; }
+    .task-date { color:var(--muted); font-size:13px; text-align:right; }
+    .bar-track { position:relative; height:22px; background:#edf2ef; border-radius:999px; overflow:hidden; }
+    .bar { position:absolute; top:0; bottom:0; min-width:2px; border-radius:999px; background:var(--teal); }
+    .bar.major { background:var(--green); }
+    .bar.water { background:var(--amber); }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; min-width:980px; font-size:14px; }
+    th, td { padding:10px 12px; border-bottom:1px solid #edf1ee; text-align:left; vertical-align:top; }
+    th { position:sticky; top:0; background:#f3f7f4; color:#34423d; z-index:1; }
+    tr:hover td { background:#fbfcfb; }
+    .tag { display:inline-flex; min-height:24px; align-items:center; border-radius:999px; padding:3px 8px; font-size:13px; white-space:nowrap; background:#e5f3eb; color:#176244; }
+    .tag.water { background:#fff2d6; color:#8a540c; }
+    @media (max-width:900px) { .summary,.phase-grid { grid-template-columns:repeat(2,minmax(160px,1fr)); } }
+    @media (max-width:560px) { .summary,.phase-grid { grid-template-columns:1fr; } .section-head { align-items:flex-start; flex-direction:column; } input,select,button { width:100%; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title-row">
+      <div>
+        <h1>淡水新市鎮地下室進度</h1>
+        <div class="meta">來源：淡水新市段進度表.xlsx / 工作表：灌漿排程；抽出地下室與大底相關項目</div>
+      </div>
+      <div class="meta">基準日：2026/06/01</div>
+    </div>
+  </header>
+  <main>
+    <div class="summary" id="summary"></div>
+    <div class="toolbar">
+      <a class="nav-link" href="營建水電整合排程.html">整合排程</a>
+      <a class="nav-link" href="水電進度排程.html">最新水電進度</a>
+      <a class="nav-link" href="室內裝潢進度.html">室內裝潢進度</a>
+      <a class="nav-link" href="五大管線申請進度.html">五大管線申請</a>
+      <input id="search" type="search" placeholder="搜尋 B4、B3、B2、B1、支撐、水電、灌漿">
+      <select id="phaseFilter" aria-label="階段篩選">
+        <option value="all">全部階段</option>
+      </select>
+      <button id="reset">清除</button>
+    </div>
+    <section>
+      <div class="section-head">
+        <h2>地下室階段摘要</h2>
+        <p>依主要里程碑分組，方便追查各層結構與水電配合</p>
+      </div>
+      <div class="phase-grid" id="phaseGrid"></div>
+    </section>
+    <section>
+      <div class="section-head">
+        <h2>地下室甘特視圖</h2>
+        <p>範圍：2024/06 至 2025/11</p>
+      </div>
+      <div class="timeline" id="timeline"></div>
+    </section>
+    <section>
+      <div class="section-head">
+        <h2>地下室完整進度表</h2>
+        <p id="rowCount"></p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>類型</th><th>階段</th><th>細項</th><th>開始</th><th>完成</th><th>工期</th><th>備註</th></tr>
+          </thead>
+          <tbody id="scheduleBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    const tasks = [
+    {
+        "main":  "基礎工程 含土方挖運棄",
+        "detail":  "擋土排樁",
+        "start":  "2024-06-01",
+        "end":  "2024-08-29",
+        "days":  90,
+        "note":  "含中間樁引孔根固+構台樁引孔"
+    },
+    {
+        "main":  "基礎工程 含土方挖運棄",
+        "detail":  "CCP工程",
+        "start":  "2024-08-30",
+        "end":  "2024-09-28",
+        "days":  30,
+        "note":  ""
+    },
+    {
+        "main":  "基礎工程 含土方挖運棄",
+        "detail":  "土方工程",
+        "start":  "2024-09-29",
+        "end":  "2025-04-27",
+        "days":  211,
+        "note":  "4層支撐+5層開挖(原預計120天)；12/18因土方問題開始停工，40日後1/27復工"
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "筏基接地",
+        "start":  "2025-05-07",
+        "end":  "2025-05-12",
+        "days":  6,
+        "note":  "打接地5日+1日查驗；此階段總工期縮減三十日，補足停工時程"
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "大底灌PC",
+        "start":  "2025-05-13",
+        "end":  "2025-05-14",
+        "days":  1,
+        "note":  "1日"
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "鋼筋進料施作地樑",
+        "start":  "2025-05-15",
+        "end":  "2025-05-24",
+        "days":  9,
+        "note":  "地樑綁紮"
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "連通管施做",
+        "start":  "2025-05-25",
+        "end":  "2025-05-28",
+        "days":  4,
+        "note":  "4日"
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "大地灌漿",
+        "start":  "2025-05-29",
+        "end":  "2025-05-29",
+        "days":  1,
+        "note":  ""
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "模板進料",
+        "start":  "2025-05-30",
+        "end":  "2025-05-30",
+        "days":  1,
+        "note":  ""
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "地樑組模",
+        "start":  "2025-05-31",
+        "end":  "2025-06-05",
+        "days":  6,
+        "note":  ""
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "地樑灌漿",
+        "start":  "2025-06-06",
+        "end":  "2025-06-06",
+        "days":  1,
+        "note":  ""
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "地樑拆模",
+        "start":  "2025-06-07",
+        "end":  "2025-06-08",
+        "days":  2,
+        "note":  "施工會議(材料、工法、圖面、勞安宣告)，清下連通"
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "BS板組模",
+        "start":  "2025-06-09",
+        "end":  "2025-06-12",
+        "days":  4,
+        "note":  "板面水電管材進料，水電護壁及排水進場施作"
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "BS板進鋼筋，吊料",
+        "start":  "2025-06-13",
+        "end":  "2025-06-13",
+        "days":  1,
+        "note":  "水電材料下樓板"
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "BS板筋綁紮，水電配管",
+        "start":  "2025-06-14",
+        "end":  "2025-06-18",
+        "days":  4,
+        "note":  "B4F樓板配管，18、19日查驗"
+    },
+    {
+        "main":  "大底到B4FL",
+        "detail":  "BS版灌漿",
+        "start":  "2025-06-19",
+        "end":  "2025-06-19",
+        "days":  1,
+        "note":  ""
+    },
+    {
+        "main":  "B4FL牆面",
+        "detail":  "養護3日",
+        "start":  "2025-06-20",
+        "end":  "2025-06-22",
+        "days":  3,
+        "note":  "臨時水電及照明上昇暫時置放"
+    },
+    {
+        "main":  "B4FL牆面",
+        "detail":  "BS放樣",
+        "start":  "2025-06-22",
+        "end":  "2025-06-22",
+        "days":  0,
+        "note":  "凌晨放樣，不影響進度"
+    },
+    {
+        "main":  "B4FL牆面",
+        "detail":  "第四層支撐拆除",
+        "start":  "2025-06-23",
+        "end":  "2025-06-26",
+        "days":  3,
+        "note":  ""
+    },
+    {
+        "main":  "B4FL牆面",
+        "detail":  "B4F柱牆筋進料",
+        "start":  "2025-06-26",
+        "end":  "2025-06-26",
+        "days":  0,
+        "note":  ""
+    },
+    {
+        "main":  "B4FL牆面",
+        "detail":  "預壘樁出界清理/帆布",
+        "start":  "2025-06-27",
+        "end":  "2025-06-29",
+        "days":  2,
+        "note":  ""
+    },
+    {
+        "main":  "B4FL牆面",
+        "detail":  "鋼筋吊料/綁紮/續接",
+        "start":  "2025-06-30",
+        "end":  "2025-07-02",
+        "days":  2,
+        "note":  ""
+    },
+    {
+        "main":  "B4FL牆面",
+        "detail":  "牆面模組立/水電配管/樑板筋進料",
+        "start":  "2025-07-03",
+        "end":  "2025-07-14",
+        "days":  11,
+        "note":  "水電牆面放樣/施作/0705連通管清管/0712樑板筋進料"
+    },
+    {
+        "main":  "B4FL牆面",
+        "detail":  "車道/水箱灌漿",
+        "start":  "2025-07-15",
+        "end":  "2025-07-15",
+        "days":  1,
+        "note":  "36米"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "半牆灌漿",
+        "start":  "2025-07-15",
+        "end":  "2025-07-16",
+        "days":  1,
+        "note":  "水電板面放樣"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "樑板模板組立/水電板放樣",
+        "start":  "2025-07-16",
+        "end":  "2025-07-19",
+        "days":  3,
+        "note":  "200米/水電放樣"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "板面鋼筋綁紮/水電配管",
+        "start":  "2025-07-19",
+        "end":  "2025-07-28",
+        "days":  9,
+        "note":  "水電板面配管/B4F顧模照明安裝/B3F照明上移/臨時盤電上移"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "板面灌漿",
+        "start":  "2025-07-29",
+        "end":  "2025-07-29",
+        "days":  1,
+        "note":  "約900米/晚上放樣"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "養護3日",
+        "start":  "2025-07-30",
+        "end":  "2025-08-01",
+        "days":  3,
+        "note":  ""
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "第三層支撐拆除",
+        "start":  "2025-08-02",
+        "end":  "2025-08-06",
+        "days":  5,
+        "note":  ""
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "B3F預壘樁打石/版面清理/牆面帆布",
+        "start":  "2025-08-07",
+        "end":  "2025-08-10",
+        "days":  3,
+        "note":  ""
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "B3F柱牆續接進料",
+        "start":  "2025-08-09",
+        "end":  "2025-08-09",
+        "days":  0,
+        "note":  ""
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "續接施工/半牆止水帶/0808模板拆板支撐",
+        "start":  "2025-08-11",
+        "end":  "2025-08-14",
+        "days":  3,
+        "note":  "版面臨時水上移(1\"管)/柱位放樣/配管"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "半牆組立/水電牆面配管/車道、水箱鋼筋綁紮/拆樑支撐",
+        "start":  "2025-08-15",
+        "end":  "2025-08-19",
+        "days":  4,
+        "note":  "拆模後水電清B4F出口/拉線"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "車道灌漿",
+        "start":  "2025-08-16",
+        "end":  "2025-08-16",
+        "days":  0,
+        "note":  ""
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "B3FL模及樑板組立",
+        "start":  "2025-08-16",
+        "end":  "2025-08-21",
+        "days":  6,
+        "note":  "70米/水電版面管路叫料"
+    },
+    {
+        "main":  "B3FL版面",
+        "detail":  "半牆澆置",
+        "start":  "2025-08-18",
+        "end":  "2025-08-18",
+        "days":  1,
+        "note":  "300米"
+    },
+    {
+        "main":  "B2FL版面",
+        "detail":  "B2FL鋼筋進料",
+        "start":  "2025-08-19",
+        "end":  "2025-08-19",
+        "days":  0,
+        "note":  "水電版面管路進料"
+    },
+    {
+        "main":  "B2FL版面",
+        "detail":  "B2FL鋼筋樑板吊料/綁紮/水電版面配管",
+        "start":  "2025-08-22",
+        "end":  "2025-08-27",
+        "days":  6,
+        "note":  "水電板面配管"
+    },
+    {
+        "main":  "B2FL版面",
+        "detail":  "B2FL版面灌漿",
+        "start":  "2025-08-28",
+        "end":  "2025-08-28",
+        "days":  1,
+        "note":  "900米"
+    },
+    {
+        "main":  "B2FL版面",
+        "detail":  "B2FL版面養護",
+        "start":  "2025-08-29",
+        "end":  "2025-09-01",
+        "days":  4,
+        "note":  "養護好後拆養護噴灑管路上移"
+    },
+    {
+        "main":  "B2FL版面",
+        "detail":  "第二層支撐拆除",
+        "start":  "2025-09-02",
+        "end":  "2025-09-05",
+        "days":  3,
+        "note":  ""
+    },
+    {
+        "main":  "B2FL版面",
+        "detail":  "B3F預壘樁打石/清理9/5   續接進料 9/6",
+        "start":  "2025-09-05",
+        "end":  "2025-09-07",
+        "days":  2,
+        "note":  ""
+    },
+    {
+        "main":  "B2FL版面",
+        "detail":  "續接吊料9/8 續接施工9/9     半牆止水帶9/10",
+        "start":  "2025-09-07",
+        "end":  "2025-09-11",
+        "days":  4,
+        "note":  "水電柱面配管/水箱牆面預留管"
+    },
+    {
+        "main":  "B2FL版面",
+        "detail":  "柱面/半牆/水箱/組模    車道鋼筋綁紮",
+        "start":  "2025-09-12",
+        "end":  "2025-09-16",
+        "days":  5,
+        "note":  "9/16車道配管，水箱封頂配管"
+    },
+    {
+        "main":  "B2FL版面",
+        "detail":  "B1F樑板模組立",
+        "start":  "2025-09-15",
+        "end":  "2025-09-19",
+        "days":  5,
+        "note":  ""
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B2FL車道/水箱灌漿(70米)",
+        "start":  "2025-09-17",
+        "end":  "2025-09-17",
+        "days":  1,
+        "note":  ""
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "車道止水條+接著劑",
+        "start":  "2025-09-18",
+        "end":  "2025-09-18",
+        "days":  1,
+        "note":  "水電放樣"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "半牆澆置(300米)",
+        "start":  "2025-09-19",
+        "end":  "2025-09-19",
+        "days":  1,
+        "note":  "水電放樣"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1F板筋進料",
+        "start":  "2025-09-20",
+        "end":  "2025-09-20",
+        "days":  1,
+        "note":  "水電放樣"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1FL板筋吊料/水電配管",
+        "start":  "2025-09-22",
+        "end":  "2025-09-29",
+        "days":  7,
+        "note":  "水電版面配管"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1F版面灌漿(850米)",
+        "start":  "2025-09-30",
+        "end":  "2025-09-30",
+        "days":  1,
+        "note":  ""
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1FL版面養護4天",
+        "start":  "2025-10-01",
+        "end":  "2025-10-04",
+        "days":  3,
+        "note":  ""
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1F柱牆+車道/續接進吊料",
+        "start":  "2025-10-04",
+        "end":  "2025-10-06",
+        "days":  3,
+        "note":  ""
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "第一層支撐及構台拆除",
+        "start":  "2025-10-08",
+        "end":  "2025-10-11",
+        "days":  4,
+        "note":  ""
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "預壘樁出界清理/帆布/清板",
+        "start":  "2025-10-12",
+        "end":  "2025-10-13",
+        "days":  1,
+        "note":  ""
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1F續接分料/綁紮",
+        "start":  "2025-10-14",
+        "end":  "2025-10-17",
+        "days":  3,
+        "note":  "柱牆配管/管洗洞配管"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1F半牆組模/水電配管/車道組模",
+        "start":  "2025-10-18",
+        "end":  "2025-10-22",
+        "days":  5,
+        "note":  "柱牆配管"
+    },
+    {
+        "main":  "B1F版面",
+        "detail":  "B1F車道灌漿/鋼筋進料",
+        "start":  "2025-10-21",
+        "end":  "2025-10-22",
+        "days":  1,
+        "note":  "50米/水電放樣"
+    },
+    {
+        "main":  "1F",
+        "detail":  "B1F梁模板組立/         半牆澆置(10/29)",
+        "start":  "2025-10-23",
+        "end":  "2025-10-30",
+        "days":  8,
+        "note":  "300米/水電放樣"
+    },
+    {
+        "main":  "1F",
+        "detail":  "B1F梁吊料/綁紮/水電配管",
+        "start":  "2025-10-30",
+        "end":  "2025-11-08",
+        "days":  8,
+        "note":  "水電配管"
+    }
+];
+    const reportDate = new Date("2026-06-01T00:00:00+08:00");
+    const phaseOrder = ["基礎工程 含土方挖運棄", "大底到B4FL", "B4FL牆面", "B3FL版面", "B2FL版面", "B1F版面", "1F"];
+    const phaseLabels = { "1F": "B1F梁板收尾" };
+    function parseDate(value) { return new Date(`${value}T00:00:00+08:00`); }
+    function formatDate(value) { return value.replaceAll("-", "/"); }
+    function dayDiff(a,b) { return Math.round((parseDate(b) - parseDate(a)) / 86400000); }
+    function typeOf(task) {
+      const text = `${task.detail} ${task.note}`;
+      if (/水電|配管|放樣|連通管|臨時水|照明|查驗|洗洞/.test(text)) return "water";
+      if (/灌漿|澆置|支撐|土方|擋土|筏基|地樑|模板|鋼筋/.test(text)) return "major";
+      return "normal";
+    }
+    function typeLabel(type) { return type === "water" ? "水電配合" : type === "major" ? "結構主線" : "一般"; }
+    function filteredTasks() {
+      const keyword = document.querySelector("#search").value.trim().toLowerCase();
+      const phase = document.querySelector("#phaseFilter").value;
+      return tasks.filter(task => {
+        const text = `${task.main} ${task.detail} ${task.note}`.toLowerCase();
+        return (phase === "all" || task.main === phase) && (!keyword || text.includes(keyword));
+      });
+    }
+    function renderSummary() {
+      const start = tasks.slice().sort((a,b) => parseDate(a.start) - parseDate(b.start))[0];
+      const end = tasks.slice().sort((a,b) => parseDate(b.end) - parseDate(a.end))[0];
+      const waterCount = tasks.filter(task => typeOf(task) === "water").length;
+      const pourCount = tasks.filter(task => /灌漿|澆置/.test(task.detail)).length;
+      const summary = [
+        { label:"進度期間", value:`${formatDate(start.start)} - ${formatDate(end.end)}`, hint:"地下室與大底相關節點" },
+        { label:"地下室項目", value:`${tasks.length} 筆`, hint:"由灌漿排程抽出" },
+        { label:"水電配合", value:`${waterCount} 筆`, hint:"含配管、放樣、臨水電、查驗" },
+        { label:"灌漿/澆置", value:`${pourCount} 筆`, hint:"含版面、半牆、車道、水箱" }
+      ];
+      document.querySelector("#summary").innerHTML = summary.map(item => `<div class="metric"><small>${item.label}</small><strong>${item.value}</strong><span>${item.hint}</span></div>`).join("");
+    }
+    function renderPhaseFilter() {
+      const phases = [...new Set(tasks.map(task => task.main))];
+      phases.sort((a,b) => phaseOrder.indexOf(a) - phaseOrder.indexOf(b));
+      document.querySelector("#phaseFilter").innerHTML += phases.map(phase => `<option value="${phase}">${phaseLabels[phase] || phase}</option>`).join("");
+    }
+    function renderPhaseGrid() {
+      const phases = [...new Set(tasks.map(task => task.main))];
+      phases.sort((a,b) => phaseOrder.indexOf(a) - phaseOrder.indexOf(b));
+      document.querySelector("#phaseGrid").innerHTML = phases.map(phase => {
+        const list = tasks.filter(task => task.main === phase);
+        const start = list.slice().sort((a,b) => parseDate(a.start) - parseDate(b.start))[0];
+        const end = list.slice().sort((a,b) => parseDate(b.end) - parseDate(a.end))[0];
+        const water = list.filter(task => typeOf(task) === "water").length;
+        return `<div class="phase"><strong>${phaseLabels[phase] || phase}</strong><span>${formatDate(start.start)} - ${formatDate(end.end)}</span><span>${list.length} 筆；水電配合 ${water} 筆</span></div>`;
+      }).join("");
+    }
+    function renderTimeline(list) {
+      const from = "2024-06-01";
+      const to = "2025-11-15";
+      const total = Math.max(dayDiff(from, to), 1);
+      document.querySelector("#timeline").innerHTML = list.map(task => {
+        const startOffset = Math.max(0, dayDiff(from, task.start));
+        const endOffset = Math.min(total, dayDiff(from, task.end));
+        const left = Math.max(0, Math.min(100, startOffset / total * 100));
+        const width = Math.max(1.2, (endOffset - startOffset + 1) / total * 100);
+        const type = typeOf(task);
+        return `<div class="time-row"><div class="task-name">${task.main}｜${task.detail}</div><div class="bar-track"><div class="bar ${type}" style="left:${left}%;width:${width}%"></div></div><div class="task-date">${formatDate(task.start)}<br>${formatDate(task.end)}</div></div>`;
+      }).join("");
+    }
+    function renderTable() {
+      const rows = filteredTasks();
+      document.querySelector("#rowCount").textContent = `目前顯示 ${rows.length} 筆`;
+      document.querySelector("#scheduleBody").innerHTML = rows.map(task => {
+        const type = typeOf(task);
+        return `<tr><td><span class="tag ${type}">${typeLabel(type)}</span></td><td>${phaseLabels[task.main] || task.main}</td><td><strong>${task.detail}</strong></td><td>${formatDate(task.start)}</td><td>${formatDate(task.end)}</td><td>${task.days} 天</td><td>${task.note || ""}</td></tr>`;
+      }).join("");
+      renderTimeline(rows);
+    }
+    document.querySelector("#search").addEventListener("input", renderTable);
+    document.querySelector("#phaseFilter").addEventListener("change", renderTable);
+    document.querySelector("#reset").addEventListener("click", () => { document.querySelector("#search").value = ""; document.querySelector("#phaseFilter").value = "all"; renderTable(); });
+    renderSummary();
+    renderPhaseFilter();
+    renderPhaseGrid();
+    renderTable();
+  </script>
+</body>
+</html>
