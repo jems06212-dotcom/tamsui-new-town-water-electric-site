@@ -3,134 +3,39 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>缺失追蹤表單</title>
+  <title>&#x7f3a;&#x5931;&#x8ffd;&#x8e64;&#x8868;&#x55ae;</title>
   <style>
-    :root{--ink:#20242a;--muted:#66717f;--line:#d8dee6;--bg:#f5f6f8;--panel:#fff;--accent:#0f6b57;--blue:#2457a6;--red:#b6423a;--amber:#8a5a00;--soft:#eef3f1;--soft-red:#fdecea;--soft-amber:#fff7e4;--soft-green:#e7f4ed}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Microsoft JhengHei","Noto Sans TC",Arial,sans-serif;line-height:1.55}header{background:#fff;border-bottom:1px solid var(--line);padding:22px clamp(14px,3vw,34px) 16px}.title-row{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap}h1{margin:0;font-size:clamp(24px,4vw,36px);letter-spacing:0}.meta{color:var(--muted);font-size:14px}main{padding:20px clamp(14px,3vw,34px) 38px}.notice{padding:13px 15px;border:1px solid #e7d8a8;border-radius:8px;background:#fff9e8;color:var(--amber);margin-bottom:16px}.grid{display:grid;grid-template-columns:420px 1fr;gap:16px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel-head{padding:14px 16px;border-bottom:1px solid var(--line);background:#fbfcfb}.panel-head h2{margin:0;font-size:18px}.panel-head p{margin:4px 0 0;color:var(--muted);font-size:14px}.form{display:grid;gap:12px;padding:16px}.field{display:grid;gap:6px}label{font-size:13px;font-weight:700;color:#34423d}input,select,textarea,button,a.button{min-height:40px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);padding:8px 10px;font:inherit}textarea{min-height:110px;resize:vertical}.actions{display:flex;gap:10px;flex-wrap:wrap}.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:800}.button{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}.button:hover,button:hover{background:var(--soft)}.primary:hover{background:#0b5c49}.toolbar{display:flex;gap:10px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--line)}.toolbar input{flex:1;min-width:220px}.list{display:grid}.issue{padding:14px 16px;border-bottom:1px solid #edf1ee}.issue h3{margin:0 0 8px;font-size:16px}.issue h3 a{color:#174c82;text-decoration:none}.issue h3 a:hover{text-decoration:underline}.badges{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.badge{display:inline-flex;align-items:center;min-height:24px;border-radius:999px;padding:3px 8px;background:#eaf2fb;color:#174c82;font-size:13px;font-weight:700}.badge.open{background:var(--soft-red);color:var(--red)}.badge.closed{background:var(--soft-green);color:#176244}.badge.high{background:var(--soft-red);color:var(--red)}.badge.mid{background:var(--soft-amber);color:var(--amber)}.body{white-space:pre-wrap;color:#34423d;font-size:14px;max-height:150px;overflow:auto}.empty{padding:28px 16px;color:var(--muted);text-align:center}.footnote{padding:0 16px 16px;color:var(--muted);font-size:13px}.nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.nav a{padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#174c82;text-decoration:none;font-weight:700}@media(max-width:920px){.grid{grid-template-columns:1fr}.toolbar input,.actions>*{width:100%}}
+    :root{--bg:#f5f6f8;--panel:#fff;--text:#20242a;--muted:#66717f;--line:#d8dee6;--green:#0f6b57;--blue:#2457a6;--amber:#8a5a00}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:"Microsoft JhengHei","Noto Sans TC",Arial,sans-serif;line-height:1.55}header{background:#fff;border-bottom:1px solid var(--line);padding:24px clamp(16px,3vw,36px) 18px}main{padding:22px clamp(16px,3vw,36px) 40px}h1{margin:0 0 8px;font-size:clamp(26px,4vw,38px);letter-spacing:0}.meta{color:var(--muted);font-size:14px}.version{display:inline-flex;margin-top:12px;padding:4px 9px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:#fff;font-size:13px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:18px 0}.card{display:block;min-height:156px;padding:18px;border:1px solid var(--line);border-radius:8px;background:#fff;color:inherit;text-decoration:none}.card:hover,.card:focus{border-color:var(--blue);outline:none;box-shadow:0 10px 24px rgba(36,87,166,.12)}.card h2{margin:0 0 8px;font-size:22px}.card p{margin:0;color:var(--muted)}.primary h2{color:var(--green)}.notice{padding:14px 16px;border:1px solid #e7d8a8;border-radius:8px;background:#fff9e8;color:var(--amber);margin:18px 0}.steps{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px}.steps h2{margin:0 0 8px;font-size:18px}ol{margin:8px 0 0;padding-left:24px}li{margin:6px 0}nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}nav a{padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#174c82;text-decoration:none;font-weight:700}
   </style>
 </head>
 <body>
   <header>
-    <div class="title-row">
-      <div>
-        <h1>缺失追蹤表單</h1>
-        <div class="meta">GitHub Issues 同步版：填寫後會前往 GitHub 送出頁；在 GitHub 按下 Submit new issue 後，公開網頁會自動讀取顯示。</div>
-        <div class="nav"><a href="../desktop.html">電腦瀏覽</a><a href="../mobile.html">手機瀏覽</a><a href="https://github.com/jems06212-dotcom/tamsui-new-town-water-electric-site/issues" target="_blank" rel="noopener">GitHub Issues</a></div>
-      </div>
-      <div class="meta">版本：VER_20260609_V5</div>
-    </div>
+    <h1>&#x7f3a;&#x5931;&#x8ffd;&#x8e64;&#x8868;&#x55ae;</h1>
+    <div class="meta">Google &#x8868;&#x55ae;&#x7248;&#xff1a;&#x73fe;&#x5834;&#x7528;&#x624b;&#x6a5f;&#x586b;&#x5beb;&#x7f3a;&#x5931;&#xff0c;&#x8cc7;&#x6599;&#x81ea;&#x52d5;&#x9032; Google &#x8a66;&#x7b97;&#x8868;&#x3002;</div>
+    <div class="version">VER_20260609_V6</div>
+    <nav><a href="../desktop.html">&#x96fb;&#x8166;&#x700f;&#x89bd;</a><a href="../mobile.html">&#x624b;&#x6a5f;&#x700f;&#x89bd;</a><a href="../CHANGELOG.html">&#x7248;&#x672c;&#x7d00;&#x9304;</a></nav>
   </header>
   <main>
-    <div class="notice">靜態 GitHub Pages 不能安全保存寫入用 token。本頁採安全做法：表單先整理資料，再帶你前往 GitHub 新增 Issue 頁。請務必在 GitHub 頁面再按 Submit new issue，才會真正新增缺失。</div>
     <div class="grid">
-      <section class="panel">
-        <div class="panel-head"><h2>新增缺失</h2><p>填完後會前往 GitHub Issue 送出頁，請在 GitHub 頁面按 Submit new issue。</p></div>
-        <form class="form" id="defectForm">
-          <div class="field"><label for="subject">缺失主旨</label><input id="subject" required placeholder="例：B2F 泵浦房配管支撐不足"></div>
-          <div class="field"><label for="location">位置</label><input id="location" placeholder="例：B2F / A 區 / 泵浦房"></div>
-          <div class="field"><label for="trade">責任單位/工項</label><input id="trade" placeholder="例：水電、消防、空調、營造"></div>
-          <div class="field"><label for="priority">優先度</label><select id="priority"><option>一般</option><option>高</option><option>緊急</option><option>低</option></select></div>
-          <div class="field"><label for="dueDate">改善期限</label><input id="dueDate" type="date"></div>
-          <div class="field"><label for="description">缺失說明</label><textarea id="description" placeholder="請描述缺失內容、影響範圍、需改善事項。"></textarea></div>
-          <div class="actions"><button class="primary" type="submit">前往 GitHub 送出缺失</button><button type="reset">清空</button></div>
-        </form>
-        <div class="footnote">若未登入 GitHub，系統會先要求登入。進入 GitHub 後，還要再按 Submit new issue 才算完成新增。只有有 repo 權限的人能新增或修改；觀看者只能看公開頁面。</div>
-      </section>
-      <section class="panel">
-        <div class="panel-head"><h2>缺失清單</h2><p id="syncText">讀取 GitHub Issues 中...</p></div>
-        <div class="toolbar"><input id="search" type="search" placeholder="搜尋主旨、內容、位置、工項"><select id="stateFilter"><option value="all">全部狀態</option><option value="open">未結案</option><option value="closed">已結案</option></select><button id="refresh" type="button">重新整理</button></div>
-        <div class="list" id="issueList"><div class="empty">讀取中...</div></div>
-      </section>
+      <a class="card primary" href="https://docs.google.com/forms/d/e/1FAIpQLSef9VGlgMHeUTXyXXcxZEpLvt31xjiUYzWNgzuIJN3Goq-prw/viewform?usp=publish-editor" target="_blank" rel="noopener">
+        <h2>&#x586b;&#x5beb;&#x7f3a;&#x5931;</h2>
+        <p>&#x958b;&#x555f; Google &#x8868;&#x55ae;&#xff0c;&#x624b;&#x6a5f;&#x73fe;&#x5834;&#x586b;&#x5beb;&#x7f3a;&#x5931;&#x4e3b;&#x65e8;&#x3001;&#x4f4d;&#x7f6e;&#x3001;&#x5de5;&#x9805;&#x3001;&#x671f;&#x9650;&#x3001;&#x8aaa;&#x660e;&#x8207;&#x7167;&#x7247;&#x9023;&#x7d50;&#x3002;</p>
+      </a>
+      <a class="card" href="https://docs.google.com/spreadsheets/d/1o0WhZwMPd16duVFdNc5r5WH3_kAsDQrBx1MOMbeXzeQ/edit?resourcekey=&gid=1527335342#gid=1527335342" target="_blank" rel="noopener">
+        <h2>&#x67e5;&#x770b;&#x56de;&#x8986;&#x8a66;&#x7b97;&#x8868;</h2>
+        <p>&#x67e5;&#x770b;&#x6240;&#x6709;&#x7f3a;&#x5931;&#x56de;&#x8986;&#x8cc7;&#x6599;&#xff0c;&#x5f8c;&#x7e8c;&#x53ef;&#x5728;&#x8a66;&#x7b97;&#x8868;&#x4e2d;&#x7be9;&#x9078;&#x3001;&#x6574;&#x7406;&#x3001;&#x8ffd;&#x8e64;&#x6539;&#x5584;&#x72c0;&#x614b;&#x3002;</p>
+      </a>
     </div>
+    <div class="notice">&#x76ee;&#x524d;&#x7db2;&#x7ad9;&#x63a1; Google &#x8868;&#x55ae;&#x4f5c;&#x70ba;&#x8cc7;&#x6599;&#x5165;&#x53e3;&#x3002;&#x82e5;&#x8981;&#x8b93;&#x6240;&#x6709;&#x89c0;&#x770b;&#x8005;&#x76f4;&#x63a5;&#x5728;&#x7db2;&#x7ad9;&#x5167;&#x770b;&#x5230;&#x7f3a;&#x5931;&#x6e05;&#x55ae;&#xff0c;&#x4e0b;&#x4e00;&#x6b65;&#x9700;&#x8981;&#x628a;&#x56de;&#x8986;&#x8a66;&#x7b97;&#x8868;&#x767c;&#x5e03;&#x6210;&#x53ef;&#x8b80;&#x53d6;&#x8cc7;&#x6599;&#x4f86;&#x6e90;&#x3002;</div>
+    <section class="steps">
+      <h2>&#x73fe;&#x5834;&#x4f7f;&#x7528;&#x6d41;&#x7a0b;</h2>
+      <ol>
+        <li>&#x6309;&#x300c;&#x586b;&#x5beb;&#x7f3a;&#x5931;&#x300d;&#x3002;</li>
+        <li>&#x5728; Google &#x8868;&#x55ae;&#x8f38;&#x5165;&#x7f3a;&#x5931;&#x5167;&#x5bb9;&#x3002;</li>
+        <li>&#x9001;&#x51fa;&#x5f8c;&#x8cc7;&#x6599;&#x6703;&#x9032;&#x5165; Google &#x8a66;&#x7b97;&#x8868;&#x3002;</li>
+        <li>&#x7ba1;&#x7406;&#x4eba;&#x54e1;&#x53ef;&#x5230;&#x300c;&#x67e5;&#x770b;&#x56de;&#x8986;&#x8a66;&#x7b97;&#x8868;&#x300d;&#x6574;&#x7406;&#x8207;&#x8ffd;&#x8e64;&#x3002;</li>
+      </ol>
+    </section>
   </main>
-  <script>
-    const owner = "jems06212-dotcom";
-    const repo = "tamsui-new-town-water-electric-site";
-    const apiBase = `https://api.github.com/repos/${owner}/${repo}/issues`;
-    const newIssueBase = `https://github.com/${owner}/${repo}/issues/new`;
-    let issues = [];
-
-    const form = document.getElementById("defectForm");
-    const list = document.getElementById("issueList");
-    const syncText = document.getElementById("syncText");
-    const search = document.getElementById("search");
-    const stateFilter = document.getElementById("stateFilter");
-
-    form.addEventListener("submit", event => {
-      event.preventDefault();
-      const subject = value("subject") || "未命名缺失";
-      const location = value("location") || "未填";
-      const trade = value("trade") || "未填";
-      const priority = value("priority") || "一般";
-      const dueDate = value("dueDate") || "未填";
-      const description = value("description") || "未填";
-      const title = `[缺失] ${location} - ${subject}`;
-      const body = [
-        "## 缺失資料",
-        `- 位置：${location}`,
-        `- 責任單位/工項：${trade}`,
-        `- 優先度：${priority}`,
-        `- 改善期限：${dueDate}`,
-        "",
-        "## 缺失說明",
-        description,
-        "",
-        "## 狀態紀錄",
-        "- 狀態：未處理",
-        "- 來源：缺失追蹤表單 GitHub Pages"
-      ].join("\\n");
-      const params = new URLSearchParams({title, body, labels:"缺失追蹤"});
-      window.location.href = `${newIssueBase}?${params.toString()}`;
-    });
-
-    document.getElementById("refresh").addEventListener("click", loadIssues);
-    search.addEventListener("input", render);
-    stateFilter.addEventListener("change", render);
-
-    function value(id){ return document.getElementById(id).value.trim(); }
-
-    async function loadIssues(){
-      list.innerHTML = '<div class="empty">讀取中...</div>';
-      syncText.textContent = "讀取 GitHub Issues 中...";
-      try {
-        const res = await fetch(`${apiBase}?state=all&per_page=100&sort=created&direction=desc`, {headers:{Accept:"application/vnd.github+json"}});
-        if(!res.ok) throw new Error(`GitHub API ${res.status}`);
-        const data = await res.json();
-        issues = data.filter(item => !item.pull_request && (item.title.startsWith("[缺失]") || item.labels.some(label => label.name === "缺失追蹤")));
-        syncText.textContent = `已同步 ${issues.length} 筆缺失，更新時間 ${new Date().toLocaleString("zh-TW")}`;
-        render();
-      } catch (err) {
-        syncText.textContent = "讀取失敗";
-        list.innerHTML = `<div class="empty">無法讀取 GitHub Issues：${escapeHtml(err.message)}</div>`;
-      }
-    }
-
-    function render(){
-      const q = search.value.trim().toLowerCase();
-      const state = stateFilter.value;
-      const visible = issues.filter(item => {
-        if(state !== "all" && item.state !== state) return false;
-        const haystack = `${item.title}
-${item.body || ""}
-${item.labels.map(l => l.name).join(" ")}`.toLowerCase();
-        return !q || haystack.includes(q);
-      });
-      if(!visible.length){ list.innerHTML = '<div class="empty">目前沒有符合條件的缺失。</div>'; return; }
-      list.innerHTML = visible.map(issueCard).join("");
-    }
-
-    function issueCard(item){
-      const labels = item.labels.map(label => `<span class="badge ${labelClass(label.name)}">${escapeHtml(label.name)}</span>`).join("");
-      const state = item.state === "closed" ? '<span class="badge closed">已結案</span>' : '<span class="badge open">未結案</span>';
-      const body = trimBody(item.body || "");
-      return `<article class="issue"><h3><a href="${item.html_url}" target="_blank" rel="noopener">#${item.number} ${escapeHtml(item.title.replace(/^\[缺失\]\s*/, ""))}</a></h3><div class="badges">${state}${labels}</div><div class="meta">建立：${new Date(item.created_at).toLocaleString("zh-TW")}　更新：${new Date(item.updated_at).toLocaleString("zh-TW")}</div><div class="body">${escapeHtml(body)}</div></article>`;
-    }
-
-    function trimBody(text){ return text.length > 900 ? text.slice(0, 900) + "
-..." : text; }
-    function labelClass(name){ if(name.includes("緊急") || name.includes("高")) return "high"; if(name.includes("一般")) return "mid"; return ""; }
-    function escapeHtml(text){ return String(text).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",""":"&quot;","'":"&#39;"}[char])); }
-
-    loadIssues();
-  </script>
 </body>
 </html>
