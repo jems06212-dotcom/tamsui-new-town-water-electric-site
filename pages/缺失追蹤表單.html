@@ -3,736 +3,131 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>淡水新市鎮缺失追蹤表單</title>
+  <title>??????</title>
   <style>
-    :root {
-      --ink:#202722;
-      --muted:#66736d;
-      --line:#d8e2dc;
-      --bg:#f6f8f6;
-      --panel:#fff;
-      --green:#1f7a57;
-      --teal:#176f75;
-      --amber:#a96312;
-      --red:#b6423a;
-      --blue:#2364aa;
-      --soft:#edf3ef;
-      --soft-green:#e5f3eb;
-      --soft-amber:#fff2d6;
-      --soft-red:#fdecea;
-      --soft-blue:#eaf2fb;
-    }
-    * { box-sizing:border-box; }
-    body {
-      margin:0;
-      color:var(--ink);
-      background:var(--bg);
-      font-family:"Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;
-      line-height:1.45;
-    }
-    header {
-      padding:22px clamp(16px,3vw,36px) 16px;
-      background:#fff;
-      border-bottom:1px solid var(--line);
-    }
-    .title-row {
-      display:flex;
-      justify-content:space-between;
-      align-items:end;
-      gap:16px;
-      flex-wrap:wrap;
-    }
-    h1 { margin:0; font-size:clamp(24px,3vw,34px); letter-spacing:0; }
-    .meta { color:var(--muted); font-size:14px; }
-    main { padding:20px clamp(16px,3vw,36px) 36px; }
-    .summary {
-      display:grid;
-      grid-template-columns:repeat(5,minmax(150px,1fr));
-      gap:12px;
-      margin-bottom:18px;
-    }
-    .metric {
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:8px;
-      padding:14px;
-      min-height:96px;
-    }
-    .metric small { display:block; color:var(--muted); margin-bottom:6px; }
-    .metric strong { display:block; font-size:24px; line-height:1.2; margin-bottom:6px; }
-    .metric span { color:var(--muted); font-size:13px; }
-    .toolbar, .actions {
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      margin:18px 0;
-    }
-    input, select, textarea, button, .nav-link {
-      min-height:38px;
-      border:1px solid var(--line);
-      border-radius:6px;
-      background:#fff;
-      color:var(--ink);
-      padding:8px 10px;
-      font:inherit;
-    }
-    textarea { min-height:86px; resize:vertical; }
-    input[type="search"] { flex:1; min-width:min(360px,100%); }
-    button { cursor:pointer; }
-    .primary { background:var(--green); border-color:var(--green); color:#fff; font-weight:700; }
-    .danger { border-color:#d8aaa6; color:var(--red); }
-    .nav-link {
-      display:inline-flex;
-      align-items:center;
-      text-decoration:none;
-    }
-    button:hover, .nav-link:hover { background:var(--soft); }
-    .primary:hover { background:#196648; }
-    section {
-      margin-top:18px;
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:8px;
-      overflow:hidden;
-    }
-    .section-head {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      padding:14px 16px;
-      border-bottom:1px solid var(--line);
-      background:#fbfcfb;
-    }
-    h2 { margin:0; font-size:18px; letter-spacing:0; }
-    .section-head p { margin:0; color:var(--muted); font-size:14px; }
-    .form-grid {
-      display:grid;
-      grid-template-columns:repeat(4,minmax(170px,1fr));
-      gap:12px;
-      padding:16px;
-    }
-    .field { display:flex; flex-direction:column; gap:6px; }
-    .field.full { grid-column:1 / -1; }
-    label { color:#34423d; font-size:13px; font-weight:700; }
-    .hint { color:var(--muted); font-size:13px; padding:0 16px 16px; }
-    .table-wrap { overflow-x:auto; }
-    table { width:100%; border-collapse:collapse; min-width:1160px; font-size:14px; }
-    th, td { padding:10px 12px; border-bottom:1px solid #edf1ee; text-align:left; vertical-align:top; }
-    th { position:sticky; top:0; background:#f3f7f4; color:#34423d; z-index:1; }
-    tr:hover td { background:#fbfcfb; }
-    .tag {
-      display:inline-flex;
-      min-height:24px;
-      align-items:center;
-      border-radius:999px;
-      padding:3px 8px;
-      font-size:13px;
-      white-space:nowrap;
-      background:var(--soft-blue);
-      color:#174c82;
-      font-weight:700;
-    }
-    .tag.open { background:var(--soft-red); color:var(--red); }
-    .tag.doing { background:var(--soft-amber); color:#8a540c; }
-    .tag.done { background:var(--soft-green); color:#176244; }
-    .tag.closed { background:#eceff2; color:#4c5963; }
-    .tag.overdue { background:var(--soft-red); color:var(--red); }
-    .tag.today { background:var(--soft-amber); color:#8a540c; }
-    .tag.ok { background:var(--soft-green); color:#176244; }
-    .row-actions { display:flex; gap:6px; flex-wrap:wrap; }
-    .row-actions button { min-height:32px; padding:5px 8px; font-size:13px; }
-    .empty {
-      padding:28px 16px;
-      color:var(--muted);
-      text-align:center;
-    }
-    .mobile-cards { display:none; }
-    .defect-card {
-      border-bottom:1px solid #edf1ee;
-      padding:14px 16px;
-    }
-    .defect-card h3 {
-      margin:0 0 8px;
-      font-size:16px;
-      letter-spacing:0;
-    }
-    .card-meta {
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:6px 12px;
-      color:var(--muted);
-      font-size:13px;
-      margin:10px 0;
-    }
-    .card-note { margin:8px 0; white-space:pre-wrap; }
-    .card-tags { display:flex; gap:6px; flex-wrap:wrap; }
-    .file-input { max-width:260px; }
-    @media (max-width:1050px) {
-      .summary { grid-template-columns:repeat(3,minmax(150px,1fr)); }
-      .form-grid { grid-template-columns:repeat(2,minmax(160px,1fr)); }
-    }
-    @media (max-width:680px) {
-      .summary { grid-template-columns:1fr 1fr; }
-      .form-grid { grid-template-columns:1fr; }
-      .section-head { align-items:flex-start; flex-direction:column; }
-      input, select, textarea, button, .nav-link { width:100%; }
-      .table-wrap { display:none; }
-      .mobile-cards { display:block; }
-      .metric strong { font-size:21px; }
-      .card-meta { grid-template-columns:1fr; }
-    }
-    @media (max-width:420px) {
-      .summary { grid-template-columns:1fr; }
-    }
+    :root{--ink:#20242a;--muted:#66717f;--line:#d8dee6;--bg:#f5f6f8;--panel:#fff;--accent:#0f6b57;--blue:#2457a6;--red:#b6423a;--amber:#8a5a00;--soft:#eef3f1;--soft-red:#fdecea;--soft-amber:#fff7e4;--soft-green:#e7f4ed}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Microsoft JhengHei","Noto Sans TC",Arial,sans-serif;line-height:1.55}header{background:#fff;border-bottom:1px solid var(--line);padding:22px clamp(14px,3vw,34px) 16px}.title-row{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap}h1{margin:0;font-size:clamp(24px,4vw,36px);letter-spacing:0}.meta{color:var(--muted);font-size:14px}main{padding:20px clamp(14px,3vw,34px) 38px}.notice{padding:13px 15px;border:1px solid #e7d8a8;border-radius:8px;background:#fff9e8;color:var(--amber);margin-bottom:16px}.grid{display:grid;grid-template-columns:420px 1fr;gap:16px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel-head{padding:14px 16px;border-bottom:1px solid var(--line);background:#fbfcfb}.panel-head h2{margin:0;font-size:18px}.panel-head p{margin:4px 0 0;color:var(--muted);font-size:14px}.form{display:grid;gap:12px;padding:16px}.field{display:grid;gap:6px}label{font-size:13px;font-weight:700;color:#34423d}input,select,textarea,button,a.button{min-height:40px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);padding:8px 10px;font:inherit}textarea{min-height:110px;resize:vertical}.actions{display:flex;gap:10px;flex-wrap:wrap}.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:800}.button{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}.button:hover,button:hover{background:var(--soft)}.primary:hover{background:#0b5c49}.toolbar{display:flex;gap:10px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--line)}.toolbar input{flex:1;min-width:220px}.list{display:grid}.issue{padding:14px 16px;border-bottom:1px solid #edf1ee}.issue h3{margin:0 0 8px;font-size:16px}.issue h3 a{color:#174c82;text-decoration:none}.issue h3 a:hover{text-decoration:underline}.badges{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.badge{display:inline-flex;align-items:center;min-height:24px;border-radius:999px;padding:3px 8px;background:#eaf2fb;color:#174c82;font-size:13px;font-weight:700}.badge.open{background:var(--soft-red);color:var(--red)}.badge.closed{background:var(--soft-green);color:#176244}.badge.high{background:var(--soft-red);color:var(--red)}.badge.mid{background:var(--soft-amber);color:var(--amber)}.body{white-space:pre-wrap;color:#34423d;font-size:14px;max-height:150px;overflow:auto}.empty{padding:28px 16px;color:var(--muted);text-align:center}.footnote{padding:0 16px 16px;color:var(--muted);font-size:13px}.nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.nav a{padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#174c82;text-decoration:none;font-weight:700}@media(max-width:920px){.grid{grid-template-columns:1fr}.toolbar input,.actions>*{width:100%}}
   </style>
 </head>
 <body>
   <header>
     <div class="title-row">
       <div>
-        <h1>淡水新市鎮缺失追蹤表單</h1>
-        <div class="meta">缺失建立、改善期限、完成日期與時效追蹤。資料儲存在目前瀏覽器，可匯出 CSV 留底。</div>
+        <h1>??????</h1>
+        <div class="meta">GitHub Issues ??????????? GitHub Issues ??????????????????</div>
+        <div class="nav"><a href="../desktop.html">????</a><a href="../mobile.html">????</a><a href="https://github.com/jems06212-dotcom/tamsui-new-town-water-electric-site/issues" target="_blank" rel="noopener">GitHub Issues</a></div>
       </div>
-      <div class="meta">基準日：<span id="todayText"></span></div>
+      <div class="meta">???VER_20260609_V3</div>
     </div>
   </header>
   <main>
-    <div class="summary" id="summary"></div>
-    <div class="toolbar">
-      <a class="nav-link" href="營建水電整合排程.html">營建水電整合</a>
-      <a class="nav-link" href="水電進度排程.html">水電進度</a>
-      <a class="nav-link" href="地下室進度.html">地下室進度</a>
-      <input id="search" type="search" placeholder="搜尋編號、樓層、位置、缺失內容、廠商、備註">
-      <select id="statusFilter" aria-label="狀態篩選">
-        <option value="all">全部狀態</option>
-        <option value="未處理">未處理</option>
-        <option value="改善中">改善中</option>
-        <option value="已完成">已完成</option>
-        <option value="已結案">已結案</option>
-      </select>
-      <select id="timeFilter" aria-label="時效篩選">
-        <option value="all">全部時效</option>
-        <option value="逾期">逾期</option>
-        <option value="今日到期">今日到期</option>
-        <option value="期限內">期限內</option>
-        <option value="已完成">已完成</option>
-      </select>
-      <button id="reset">清除</button>
+    <div class="notice">?? GitHub Pages ????????? token??????????????????? GitHub ?? Issue??? GitHub ????????????? Issue ???</div>
+    <div class="grid">
+      <section class="panel">
+        <div class="panel-head"><h2>????</h2><p>?????? GitHub Issue??? GitHub ??????</p></div>
+        <form class="form" id="defectForm">
+          <div class="field"><label for="subject">????</label><input id="subject" required placeholder="??B2F ?????????"></div>
+          <div class="field"><label for="location">??</label><input id="location" placeholder="??B2F / A ? / ???"></div>
+          <div class="field"><label for="trade">????/??</label><input id="trade" placeholder="?????????????"></div>
+          <div class="field"><label for="priority">???</label><select id="priority"><option>??</option><option>?</option><option>??</option><option>?</option></select></div>
+          <div class="field"><label for="dueDate">????</label><input id="dueDate" type="date"></div>
+          <div class="field"><label for="description">????</label><textarea id="description" placeholder="???????????????????"></textarea></div>
+          <div class="actions"><button class="primary" type="submit">?? GitHub ??</button><button type="reset">??</button></div>
+        </form>
+        <div class="footnote">???? GitHub????????????? repo ??????????????????????</div>
+      </section>
+      <section class="panel">
+        <div class="panel-head"><h2>????</h2><p id="syncText">?? GitHub Issues ?...</p></div>
+        <div class="toolbar"><input id="search" type="search" placeholder="?????????????"><select id="stateFilter"><option value="all">????</option><option value="open">???</option><option value="closed">???</option></select><button id="refresh" type="button">????</button></div>
+        <div class="list" id="issueList"><div class="empty">???...</div></div>
+      </section>
     </div>
-
-    <section>
-      <div class="section-head">
-        <h2>建立缺失</h2>
-        <p>建議每一項缺失單獨建立，方便追蹤責任與期限。</p>
-      </div>
-      <form id="defectForm" class="form-grid">
-        <input type="hidden" id="editId">
-        <div class="field">
-          <label for="floor">樓層</label>
-          <input id="floor" name="floor" placeholder="例：7F、B2F、R2F" required>
-        </div>
-        <div class="field">
-          <label for="area">區域 / 戶別</label>
-          <input id="area" name="area" placeholder="例：A棟 A3、梯廳、機房" required>
-        </div>
-        <div class="field">
-          <label for="trade">工種</label>
-          <select id="trade" name="trade">
-            <option>營建</option>
-            <option>給排水</option>
-            <option>消防</option>
-            <option>強電</option>
-            <option>弱電</option>
-            <option>裝修</option>
-            <option>其他</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="vendor">責任廠商</label>
-          <input id="vendor" name="vendor" placeholder="例：營造、挺林、程翔">
-        </div>
-        <div class="field">
-          <label for="foundDate">建立日期</label>
-          <input id="foundDate" name="foundDate" type="date" required>
-        </div>
-        <div class="field">
-          <label for="dueDate">改善期限</label>
-          <input id="dueDate" name="dueDate" type="date" required>
-        </div>
-        <div class="field">
-          <label for="doneDate">完成日期</label>
-          <input id="doneDate" name="doneDate" type="date">
-        </div>
-        <div class="field">
-          <label for="status">狀態</label>
-          <select id="status" name="status">
-            <option>未處理</option>
-            <option>改善中</option>
-            <option>已完成</option>
-            <option>已結案</option>
-          </select>
-        </div>
-        <div class="field full">
-          <label for="description">缺失內容</label>
-          <textarea id="description" name="description" placeholder="例：管路穿樑位置偏移，需確認補強及套管位置。" required></textarea>
-        </div>
-        <div class="field full">
-          <label for="action">改善方式 / 備註</label>
-          <textarea id="action" name="action" placeholder="例：請廠商 6/12 前完成改善，改善後拍照回傳並現場複查。"></textarea>
-        </div>
-        <div class="field full">
-          <label for="photoLink">照片或雲端連結</label>
-          <input id="photoLink" name="photoLink" placeholder="貼上照片、Google Drive 或 LINE 相簿連結">
-        </div>
-        <div class="field full">
-          <div class="actions">
-            <button class="primary" type="submit">儲存缺失</button>
-            <button type="button" id="cancelEdit">取消編輯</button>
-            <button type="button" id="sampleData">建立範例</button>
-          </div>
-        </div>
-      </form>
-      <div class="hint">手機開啟後也能新增；若要換手機或給其他人彙整，請先匯出 CSV，再由另一台匯入。</div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <h2>缺失追蹤清單</h2>
-        <p id="rowCount"></p>
-      </div>
-      <div class="actions" style="padding:0 16px 12px; margin-top:12px;">
-        <button id="exportCsv" type="button">匯出 CSV</button>
-        <label class="nav-link file-input" for="importCsv">匯入 CSV</label>
-        <input id="importCsv" type="file" accept=".csv,text/csv" style="display:none">
-        <button id="clearDone" type="button">隱藏已結案</button>
-        <button id="clearAll" class="danger" type="button">清空本機資料</button>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>編號</th>
-              <th>狀態</th>
-              <th>時效</th>
-              <th>樓層 / 區域</th>
-              <th>工種</th>
-              <th>責任廠商</th>
-              <th>缺失內容</th>
-              <th>建立</th>
-              <th>期限</th>
-              <th>完成</th>
-              <th>備註</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody id="defectBody"></tbody>
-        </table>
-      </div>
-      <div class="mobile-cards" id="mobileCards"></div>
-      <div class="empty" id="emptyState" hidden>目前沒有符合條件的缺失。</div>
-    </section>
   </main>
-
   <script>
-    const storageKey = "tamsui_defect_tracker_v1";
-    const fields = ["id","status","timing","floor","area","trade","vendor","description","foundDate","dueDate","doneDate","action","photoLink","createdAt","updatedAt"];
-    const form = document.getElementById("defectForm");
-    const today = new Date();
-    const todayIso = toIso(today);
-    let defects = loadDefects();
-    let hideClosed = false;
+    const owner = "jems06212-dotcom";
+    const repo = "tamsui-new-town-water-electric-site";
+    const apiBase = `https://api.github.com/repos/${owner}/${repo}/issues`;
+    const newIssueBase = `https://github.com/${owner}/${repo}/issues/new`;
+    let issues = [];
 
-    document.getElementById("todayText").textContent = formatDate(todayIso);
-    document.getElementById("foundDate").value = todayIso;
-    document.getElementById("dueDate").value = addDays(todayIso, 7);
+    const form = document.getElementById("defectForm");
+    const list = document.getElementById("issueList");
+    const syncText = document.getElementById("syncText");
+    const search = document.getElementById("search");
+    const stateFilter = document.getElementById("stateFilter");
 
     form.addEventListener("submit", event => {
       event.preventDefault();
-      const data = readForm();
-      if (!data.floor || !data.area || !data.description || !data.foundDate || !data.dueDate) return;
-      const editId = document.getElementById("editId").value;
-      if (editId) {
-        defects = defects.map(item => item.id === editId ? {...item, ...data, updatedAt:new Date().toISOString()} : item);
-      } else {
-        defects.unshift({
-          id: nextId(),
-          ...data,
-          createdAt:new Date().toISOString(),
-          updatedAt:new Date().toISOString()
-        });
-      }
-      saveDefects();
-      resetForm();
-      render();
+      const subject = value("subject") || "?????";
+      const location = value("location") || "??";
+      const trade = value("trade") || "??";
+      const priority = value("priority") || "??";
+      const dueDate = value("dueDate") || "??";
+      const description = value("description") || "??";
+      const title = `[??] ${location} - ${subject}`;
+      const body = [
+        "## ????",
+        `- ???${location}`,
+        `- ????/???${trade}`,
+        `- ????${priority}`,
+        `- ?????${dueDate}`,
+        "",
+        "## ????",
+        description,
+        "",
+        "## ????",
+        "- ??????",
+        "- ????????? GitHub Pages"
+      ].join("\n");
+      const params = new URLSearchParams({title, body, labels:"????"});
+      window.open(`${newIssueBase}?${params.toString()}`, "_blank", "noopener");
     });
 
-    document.getElementById("cancelEdit").addEventListener("click", resetForm);
-    document.getElementById("sampleData").addEventListener("click", () => {
-      defects.unshift({
-        id: nextId(),
-        status:"未處理",
-        floor:"7F",
-        area:"A棟梯廳",
-        trade:"消防",
-        vendor:"消防廠商",
-        description:"消防立管套管位置需複查，確認是否影響後續牆板組立。",
-        foundDate:todayIso,
-        dueDate:addDays(todayIso, 3),
-        doneDate:"",
-        action:"請廠商現場會同確認，完成後拍照回報。",
-        photoLink:"",
-        createdAt:new Date().toISOString(),
-        updatedAt:new Date().toISOString()
-      });
-      saveDefects();
-      render();
-    });
-    document.getElementById("search").addEventListener("input", render);
-    document.getElementById("statusFilter").addEventListener("change", render);
-    document.getElementById("timeFilter").addEventListener("change", render);
-    document.getElementById("reset").addEventListener("click", () => {
-      document.getElementById("search").value = "";
-      document.getElementById("statusFilter").value = "all";
-      document.getElementById("timeFilter").value = "all";
-      render();
-    });
-    document.getElementById("clearDone").addEventListener("click", () => {
-      hideClosed = !hideClosed;
-      document.getElementById("clearDone").textContent = hideClosed ? "顯示已結案" : "隱藏已結案";
-      render();
-    });
-    document.getElementById("clearAll").addEventListener("click", () => {
-      if (!confirm("確定要清空這台裝置上的缺失資料？建議先匯出 CSV。")) return;
-      defects = [];
-      saveDefects();
-      render();
-    });
-    document.getElementById("exportCsv").addEventListener("click", exportCsv);
-    document.getElementById("importCsv").addEventListener("change", importCsv);
+    document.getElementById("refresh").addEventListener("click", loadIssues);
+    search.addEventListener("input", render);
+    stateFilter.addEventListener("change", render);
 
-    render();
+    function value(id){ return document.getElementById(id).value.trim(); }
 
-    function readForm() {
-      const status = document.getElementById("status").value;
-      const doneDate = document.getElementById("doneDate").value;
-      return {
-        status: doneDate && status === "改善中" ? "已完成" : status,
-        floor: document.getElementById("floor").value.trim(),
-        area: document.getElementById("area").value.trim(),
-        trade: document.getElementById("trade").value,
-        vendor: document.getElementById("vendor").value.trim(),
-        description: document.getElementById("description").value.trim(),
-        foundDate: document.getElementById("foundDate").value,
-        dueDate: document.getElementById("dueDate").value,
-        doneDate,
-        action: document.getElementById("action").value.trim(),
-        photoLink: document.getElementById("photoLink").value.trim()
-      };
-    }
-
-    function resetForm() {
-      form.reset();
-      document.getElementById("editId").value = "";
-      document.getElementById("foundDate").value = todayIso;
-      document.getElementById("dueDate").value = addDays(todayIso, 7);
-      document.querySelector(".primary").textContent = "儲存缺失";
-    }
-
-    function render() {
-      defects = defects.map(item => ({...item, timing:getTiming(item)}));
-      const visible = filteredDefects();
-      renderSummary();
-      renderTable(visible);
-      renderCards(visible);
-      document.getElementById("rowCount").textContent = `顯示 ${visible.length} 筆 / 全部 ${defects.length} 筆`;
-      document.getElementById("emptyState").hidden = visible.length > 0;
-    }
-
-    function filteredDefects() {
-      const keyword = document.getElementById("search").value.trim().toLowerCase();
-      const status = document.getElementById("statusFilter").value;
-      const timing = document.getElementById("timeFilter").value;
-      return defects
-        .filter(item => !hideClosed || item.status !== "已結案")
-        .filter(item => status === "all" || item.status === status)
-        .filter(item => timing === "all" || item.timing === timing)
-        .filter(item => {
-          if (!keyword) return true;
-          return fields.some(key => String(item[key] || "").toLowerCase().includes(keyword));
-        })
-        .sort((a, b) => {
-          const rank = {"逾期":0,"今日到期":1,"期限內":2,"已完成":3};
-          return (rank[a.timing] ?? 9) - (rank[b.timing] ?? 9) || String(a.dueDate).localeCompare(String(b.dueDate));
-        });
-    }
-
-    function renderSummary() {
-      const open = defects.filter(d => d.status === "未處理").length;
-      const doing = defects.filter(d => d.status === "改善中").length;
-      const done = defects.filter(d => d.status === "已完成").length;
-      const closed = defects.filter(d => d.status === "已結案").length;
-      const overdue = defects.filter(d => getTiming(d) === "逾期").length;
-      document.getElementById("summary").innerHTML = [
-        metric("總缺失", defects.length, "目前建立筆數"),
-        metric("未處理", open, "尚未開始改善"),
-        metric("改善中", doing, "需追蹤廠商進度"),
-        metric("已完成 / 結案", done + closed, "待複查或已結案"),
-        metric("逾期", overdue, "超過改善期限")
-      ].join("");
-    }
-
-    function metric(label, value, note) {
-      return `<div class="metric"><small>${escapeHtml(label)}</small><strong>${value}</strong><span>${escapeHtml(note)}</span></div>`;
-    }
-
-    function renderTable(items) {
-      const body = document.getElementById("defectBody");
-      body.innerHTML = items.map(item => `
-        <tr>
-          <td>${escapeHtml(item.id)}</td>
-          <td>${statusTag(item.status)}</td>
-          <td>${timingTag(item.timing)}</td>
-          <td><strong>${escapeHtml(item.floor)}</strong><br>${escapeHtml(item.area)}</td>
-          <td>${escapeHtml(item.trade)}</td>
-          <td>${escapeHtml(item.vendor || "-")}</td>
-          <td>${linkText(item.description, item.photoLink)}</td>
-          <td>${formatDate(item.foundDate)}</td>
-          <td>${formatDate(item.dueDate)}</td>
-          <td>${formatDate(item.doneDate)}</td>
-          <td>${escapeHtml(item.action || "-")}</td>
-          <td>${actionButtons(item.id)}</td>
-        </tr>
-      `).join("");
-    }
-
-    function renderCards(items) {
-      document.getElementById("mobileCards").innerHTML = items.map(item => `
-        <article class="defect-card">
-          <div class="card-tags">${statusTag(item.status)} ${timingTag(item.timing)}</div>
-          <h3>${escapeHtml(item.id)}｜${escapeHtml(item.floor)} ${escapeHtml(item.area)}</h3>
-          <div class="card-meta">
-            <span>工種：${escapeHtml(item.trade)}</span>
-            <span>廠商：${escapeHtml(item.vendor || "-")}</span>
-            <span>建立：${formatDate(item.foundDate)}</span>
-            <span>期限：${formatDate(item.dueDate)}</span>
-            <span>完成：${formatDate(item.doneDate)}</span>
-          </div>
-          <div class="card-note">${linkText(item.description, item.photoLink)}</div>
-          <div class="card-note">${escapeHtml(item.action || "")}</div>
-          <div class="row-actions">${actionButtons(item.id)}</div>
-        </article>
-      `).join("");
-    }
-
-    function actionButtons(id) {
-      return `<div class="row-actions">
-        <button type="button" onclick="editDefect('${id}')">編輯</button>
-        <button type="button" onclick="markDone('${id}')">完成</button>
-        <button type="button" onclick="closeDefect('${id}')">結案</button>
-        <button class="danger" type="button" onclick="deleteDefect('${id}')">刪除</button>
-      </div>`;
-    }
-
-    window.editDefect = id => {
-      const item = defects.find(d => d.id === id);
-      if (!item) return;
-      document.getElementById("editId").value = item.id;
-      document.getElementById("floor").value = item.floor || "";
-      document.getElementById("area").value = item.area || "";
-      document.getElementById("trade").value = item.trade || "營建";
-      document.getElementById("vendor").value = item.vendor || "";
-      document.getElementById("description").value = item.description || "";
-      document.getElementById("foundDate").value = item.foundDate || todayIso;
-      document.getElementById("dueDate").value = item.dueDate || addDays(todayIso, 7);
-      document.getElementById("doneDate").value = item.doneDate || "";
-      document.getElementById("status").value = item.status || "未處理";
-      document.getElementById("action").value = item.action || "";
-      document.getElementById("photoLink").value = item.photoLink || "";
-      document.querySelector(".primary").textContent = "更新缺失";
-      window.scrollTo({top:0, behavior:"smooth"});
-    };
-
-    window.markDone = id => {
-      defects = defects.map(item => item.id === id ? {...item, status:"已完成", doneDate:item.doneDate || todayIso, updatedAt:new Date().toISOString()} : item);
-      saveDefects();
-      render();
-    };
-
-    window.closeDefect = id => {
-      defects = defects.map(item => item.id === id ? {...item, status:"已結案", doneDate:item.doneDate || todayIso, updatedAt:new Date().toISOString()} : item);
-      saveDefects();
-      render();
-    };
-
-    window.deleteDefect = id => {
-      if (!confirm("確定刪除此筆缺失？")) return;
-      defects = defects.filter(item => item.id !== id);
-      saveDefects();
-      render();
-    };
-
-    function statusTag(status) {
-      const cls = {"未處理":"open","改善中":"doing","已完成":"done","已結案":"closed"}[status] || "";
-      return `<span class="tag ${cls}">${escapeHtml(status || "-")}</span>`;
-    }
-
-    function timingTag(timing) {
-      const cls = {"逾期":"overdue","今日到期":"today","期限內":"ok","已完成":"done"}[timing] || "";
-      return `<span class="tag ${cls}">${escapeHtml(timing || "-")}</span>`;
-    }
-
-    function getTiming(item) {
-      if (item.status === "已完成" || item.status === "已結案" || item.doneDate) return "已完成";
-      if (!item.dueDate) return "期限內";
-      const due = toDate(item.dueDate);
-      const now = toDate(todayIso);
-      if (due < now) return "逾期";
-      if (item.dueDate === todayIso) return "今日到期";
-      return "期限內";
-    }
-
-    function exportCsv() {
-      const rows = [fields, ...defects.map(item => fields.map(key => key === "timing" ? getTiming(item) : (item[key] || "")))];
-      const csv = rows.map(row => row.map(csvCell).join(",")).join("\r\n");
-      const blob = new Blob(["\ufeff" + csv], {type:"text/csv;charset=utf-8"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `淡水新市鎮缺失追蹤_${todayIso}.csv`;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function importCsv(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        const rows = parseCsv(String(reader.result || ""));
-        if (rows.length < 2) return;
-        const headers = rows[0].map(h => h.replace(/^\ufeff/, ""));
-        const imported = rows.slice(1).map(row => {
-          const item = {};
-          headers.forEach((key, index) => item[key] = row[index] || "");
-          item.id = item.id || nextId();
-          item.status = item.status || "未處理";
-          item.createdAt = item.createdAt || new Date().toISOString();
-          item.updatedAt = new Date().toISOString();
-          return item;
-        });
-        defects = mergeDefects(defects, imported);
-        saveDefects();
-        render();
-        event.target.value = "";
-      };
-      reader.readAsText(file, "utf-8");
-    }
-
-    function mergeDefects(current, imported) {
-      const map = new Map(current.map(item => [item.id, item]));
-      imported.forEach(item => map.set(item.id, {...map.get(item.id), ...item}));
-      return Array.from(map.values());
-    }
-
-    function loadDefects() {
+    async function loadIssues(){
+      list.innerHTML = '<div class="empty">???...</div>';
+      syncText.textContent = "?? GitHub Issues ?...";
       try {
-        return JSON.parse(localStorage.getItem(storageKey) || "[]");
-      } catch {
-        return [];
+        const res = await fetch(`${apiBase}?state=all&per_page=100&sort=created&direction=desc`, {headers:{Accept:"application/vnd.github+json"}});
+        if(!res.ok) throw new Error(`GitHub API ${res.status}`);
+        const data = await res.json();
+        issues = data.filter(item => !item.pull_request && (item.title.startsWith("[??]") || item.labels.some(label => label.name === "????")));
+        syncText.textContent = `??? ${issues.length} ???????? ${new Date().toLocaleString("zh-TW")}`;
+        render();
+      } catch (err) {
+        syncText.textContent = "????";
+        list.innerHTML = `<div class="empty">???? GitHub Issues?${escapeHtml(err.message)}</div>`;
       }
     }
 
-    function saveDefects() {
-      localStorage.setItem(storageKey, JSON.stringify(defects));
+    function render(){
+      const q = search.value.trim().toLowerCase();
+      const state = stateFilter.value;
+      const visible = issues.filter(item => {
+        if(state !== "all" && item.state !== state) return false;
+        const haystack = `${item.title}\n${item.body || ""}\n${item.labels.map(l => l.name).join(" ")}`.toLowerCase();
+        return !q || haystack.includes(q);
+      });
+      if(!visible.length){ list.innerHTML = '<div class="empty">????????????</div>'; return; }
+      list.innerHTML = visible.map(issueCard).join("");
     }
 
-    function nextId() {
-      const date = todayIso.replaceAll("-", "");
-      const seq = defects.filter(item => String(item.id || "").startsWith(`D-${date}`)).length + 1;
-      return `D-${date}-${String(seq).padStart(3, "0")}`;
+    function issueCard(item){
+      const labels = item.labels.map(label => `<span class="badge ${labelClass(label.name)}">${escapeHtml(label.name)}</span>`).join("");
+      const state = item.state === "closed" ? '<span class="badge closed">???</span>' : '<span class="badge open">???</span>';
+      const body = trimBody(item.body || "");
+      return `<article class="issue"><h3><a href="${item.html_url}" target="_blank" rel="noopener">#${item.number} ${escapeHtml(item.title.replace(/^\[??\]\s*/, ""))}</a></h3><div class="badges">${state}${labels}</div><div class="meta">???${new Date(item.created_at).toLocaleString("zh-TW")}????${new Date(item.updated_at).toLocaleString("zh-TW")}</div><div class="body">${escapeHtml(body)}</div></article>`;
     }
 
-    function addDays(iso, days) {
-      const date = toDate(iso);
-      date.setDate(date.getDate() + days);
-      return toIso(date);
-    }
+    function trimBody(text){ return text.length > 900 ? text.slice(0, 900) + "\n..." : text; }
+    function labelClass(name){ if(name.includes("??") || name.includes("?")) return "high"; if(name.includes("??")) return "mid"; return ""; }
+    function escapeHtml(text){ return String(text).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[char])); }
 
-    function toDate(iso) {
-      const [year, month, day] = String(iso).split("-").map(Number);
-      return new Date(year, month - 1, day);
-    }
-
-    function toIso(date) {
-      const y = date.getFullYear();
-      const m = String(date.getMonth() + 1).padStart(2, "0");
-      const d = String(date.getDate()).padStart(2, "0");
-      return `${y}-${m}-${d}`;
-    }
-
-    function formatDate(value) {
-      if (!value) return "-";
-      const [y, m, d] = String(value).slice(0, 10).split("-");
-      if (!y || !m || !d) return value;
-      return `${y}/${m}/${d}`;
-    }
-
-    function linkText(text, url) {
-      const cleanText = escapeHtml(text || "-");
-      if (!url) return cleanText;
-      return `${cleanText}<br><a href="${escapeAttribute(url)}" target="_blank" rel="noopener">查看照片/連結</a>`;
-    }
-
-    function csvCell(value) {
-      return `"${String(value ?? "").replaceAll('"', '""')}"`;
-    }
-
-    function parseCsv(text) {
-      const rows = [];
-      let row = [];
-      let cell = "";
-      let quote = false;
-      for (let i = 0; i < text.length; i++) {
-        const ch = text[i];
-        const next = text[i + 1];
-        if (quote && ch === '"' && next === '"') {
-          cell += '"';
-          i++;
-        } else if (ch === '"') {
-          quote = !quote;
-        } else if (!quote && ch === ",") {
-          row.push(cell);
-          cell = "";
-        } else if (!quote && (ch === "\n" || ch === "\r")) {
-          if (ch === "\r" && next === "\n") i++;
-          row.push(cell);
-          if (row.some(value => value !== "")) rows.push(row);
-          row = [];
-          cell = "";
-        } else {
-          cell += ch;
-        }
-      }
-      row.push(cell);
-      if (row.some(value => value !== "")) rows.push(row);
-      return rows;
-    }
-
-    function escapeHtml(value) {
-      return String(value ?? "").replace(/[&<>"']/g, char => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#39;"
-      }[char]));
-    }
-
-    function escapeAttribute(value) {
-      return escapeHtml(value).replace(/"/g, "&quot;");
-    }
+    loadIssues();
   </script>
 </body>
 </html>
