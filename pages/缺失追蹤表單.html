@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>??????</title>
+  <title>缺失追蹤表單</title>
   <style>
     :root{--ink:#20242a;--muted:#66717f;--line:#d8dee6;--bg:#f5f6f8;--panel:#fff;--accent:#0f6b57;--blue:#2457a6;--red:#b6423a;--amber:#8a5a00;--soft:#eef3f1;--soft-red:#fdecea;--soft-amber:#fff7e4;--soft-green:#e7f4ed}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Microsoft JhengHei","Noto Sans TC",Arial,sans-serif;line-height:1.55}header{background:#fff;border-bottom:1px solid var(--line);padding:22px clamp(14px,3vw,34px) 16px}.title-row{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap}h1{margin:0;font-size:clamp(24px,4vw,36px);letter-spacing:0}.meta{color:var(--muted);font-size:14px}main{padding:20px clamp(14px,3vw,34px) 38px}.notice{padding:13px 15px;border:1px solid #e7d8a8;border-radius:8px;background:#fff9e8;color:var(--amber);margin-bottom:16px}.grid{display:grid;grid-template-columns:420px 1fr;gap:16px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel-head{padding:14px 16px;border-bottom:1px solid var(--line);background:#fbfcfb}.panel-head h2{margin:0;font-size:18px}.panel-head p{margin:4px 0 0;color:var(--muted);font-size:14px}.form{display:grid;gap:12px;padding:16px}.field{display:grid;gap:6px}label{font-size:13px;font-weight:700;color:#34423d}input,select,textarea,button,a.button{min-height:40px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);padding:8px 10px;font:inherit}textarea{min-height:110px;resize:vertical}.actions{display:flex;gap:10px;flex-wrap:wrap}.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:800}.button{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}.button:hover,button:hover{background:var(--soft)}.primary:hover{background:#0b5c49}.toolbar{display:flex;gap:10px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--line)}.toolbar input{flex:1;min-width:220px}.list{display:grid}.issue{padding:14px 16px;border-bottom:1px solid #edf1ee}.issue h3{margin:0 0 8px;font-size:16px}.issue h3 a{color:#174c82;text-decoration:none}.issue h3 a:hover{text-decoration:underline}.badges{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.badge{display:inline-flex;align-items:center;min-height:24px;border-radius:999px;padding:3px 8px;background:#eaf2fb;color:#174c82;font-size:13px;font-weight:700}.badge.open{background:var(--soft-red);color:var(--red)}.badge.closed{background:var(--soft-green);color:#176244}.badge.high{background:var(--soft-red);color:var(--red)}.badge.mid{background:var(--soft-amber);color:var(--amber)}.body{white-space:pre-wrap;color:#34423d;font-size:14px;max-height:150px;overflow:auto}.empty{padding:28px 16px;color:var(--muted);text-align:center}.footnote{padding:0 16px 16px;color:var(--muted);font-size:13px}.nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.nav a{padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#174c82;text-decoration:none;font-weight:700}@media(max-width:920px){.grid{grid-template-columns:1fr}.toolbar input,.actions>*{width:100%}}
   </style>
@@ -12,33 +12,33 @@
   <header>
     <div class="title-row">
       <div>
-        <h1>??????</h1>
-        <div class="meta">GitHub Issues ??????????? GitHub Issues ??????????????????</div>
-        <div class="nav"><a href="../desktop.html">????</a><a href="../mobile.html">????</a><a href="https://github.com/jems06212-dotcom/tamsui-new-town-water-electric-site/issues" target="_blank" rel="noopener">GitHub Issues</a></div>
+        <h1>缺失追蹤表單</h1>
+        <div class="meta">GitHub Issues 同步版：新增缺失後，由 GitHub Issues 作為資料來源，公開網頁自動讀取顯示。</div>
+        <div class="nav"><a href="../desktop.html">電腦瀏覽</a><a href="../mobile.html">手機瀏覽</a><a href="https://github.com/jems06212-dotcom/tamsui-new-town-water-electric-site/issues" target="_blank" rel="noopener">GitHub Issues</a></div>
       </div>
-      <div class="meta">???VER_20260609_V3</div>
+      <div class="meta">版本：VER_20260609_V4</div>
     </div>
   </header>
   <main>
-    <div class="notice">?? GitHub Pages ????????? token??????????????????? GitHub ?? Issue??? GitHub ????????????? Issue ???</div>
+    <div class="notice">靜態 GitHub Pages 不能安全保存寫入用 token。本頁採安全做法：表單先整理資料，再開 GitHub 新增 Issue；按下 GitHub 的送出後，這個頁面會讀取該 Issue 顯示。</div>
     <div class="grid">
       <section class="panel">
-        <div class="panel-head"><h2>????</h2><p>?????? GitHub Issue??? GitHub ??????</p></div>
+        <div class="panel-head"><h2>新增缺失</h2><p>填完後會開啟 GitHub Issue，請在 GitHub 頁面按送出。</p></div>
         <form class="form" id="defectForm">
-          <div class="field"><label for="subject">????</label><input id="subject" required placeholder="??B2F ?????????"></div>
-          <div class="field"><label for="location">??</label><input id="location" placeholder="??B2F / A ? / ???"></div>
-          <div class="field"><label for="trade">????/??</label><input id="trade" placeholder="?????????????"></div>
-          <div class="field"><label for="priority">???</label><select id="priority"><option>??</option><option>?</option><option>??</option><option>?</option></select></div>
-          <div class="field"><label for="dueDate">????</label><input id="dueDate" type="date"></div>
-          <div class="field"><label for="description">????</label><textarea id="description" placeholder="???????????????????"></textarea></div>
-          <div class="actions"><button class="primary" type="submit">?? GitHub ??</button><button type="reset">??</button></div>
+          <div class="field"><label for="subject">缺失主旨</label><input id="subject" required placeholder="例：B2F 泵浦房配管支撐不足"></div>
+          <div class="field"><label for="location">位置</label><input id="location" placeholder="例：B2F / A 區 / 泵浦房"></div>
+          <div class="field"><label for="trade">責任單位/工項</label><input id="trade" placeholder="例：水電、消防、空調、營造"></div>
+          <div class="field"><label for="priority">優先度</label><select id="priority"><option>一般</option><option>高</option><option>緊急</option><option>低</option></select></div>
+          <div class="field"><label for="dueDate">改善期限</label><input id="dueDate" type="date"></div>
+          <div class="field"><label for="description">缺失說明</label><textarea id="description" placeholder="請描述缺失內容、影響範圍、需改善事項。"></textarea></div>
+          <div class="actions"><button class="primary" type="submit">建立 GitHub 缺失</button><button type="reset">清空</button></div>
         </form>
-        <div class="footnote">???? GitHub????????????? repo ??????????????????????</div>
+        <div class="footnote">若未登入 GitHub，系統會先要求登入。只有有 repo 權限的人能新增或修改；觀看者只能看公開頁面。</div>
       </section>
       <section class="panel">
-        <div class="panel-head"><h2>????</h2><p id="syncText">?? GitHub Issues ?...</p></div>
-        <div class="toolbar"><input id="search" type="search" placeholder="?????????????"><select id="stateFilter"><option value="all">????</option><option value="open">???</option><option value="closed">???</option></select><button id="refresh" type="button">????</button></div>
-        <div class="list" id="issueList"><div class="empty">???...</div></div>
+        <div class="panel-head"><h2>缺失清單</h2><p id="syncText">讀取 GitHub Issues 中...</p></div>
+        <div class="toolbar"><input id="search" type="search" placeholder="搜尋主旨、內容、位置、工項"><select id="stateFilter"><option value="all">全部狀態</option><option value="open">未結案</option><option value="closed">已結案</option></select><button id="refresh" type="button">重新整理</button></div>
+        <div class="list" id="issueList"><div class="empty">讀取中...</div></div>
       </section>
     </div>
   </main>
@@ -57,28 +57,28 @@
 
     form.addEventListener("submit", event => {
       event.preventDefault();
-      const subject = value("subject") || "?????";
-      const location = value("location") || "??";
-      const trade = value("trade") || "??";
-      const priority = value("priority") || "??";
-      const dueDate = value("dueDate") || "??";
-      const description = value("description") || "??";
-      const title = `[??] ${location} - ${subject}`;
+      const subject = value("subject") || "未命名缺失";
+      const location = value("location") || "未填";
+      const trade = value("trade") || "未填";
+      const priority = value("priority") || "一般";
+      const dueDate = value("dueDate") || "未填";
+      const description = value("description") || "未填";
+      const title = `[缺失] ${location} - ${subject}`;
       const body = [
-        "## ????",
-        `- ???${location}`,
-        `- ????/???${trade}`,
-        `- ????${priority}`,
-        `- ?????${dueDate}`,
+        "## 缺失資料",
+        `- 位置：${location}`,
+        `- 責任單位/工項：${trade}`,
+        `- 優先度：${priority}`,
+        `- 改善期限：${dueDate}`,
         "",
-        "## ????",
+        "## 缺失說明",
         description,
         "",
-        "## ????",
-        "- ??????",
-        "- ????????? GitHub Pages"
-      ].join("\n");
-      const params = new URLSearchParams({title, body, labels:"????"});
+        "## 狀態紀錄",
+        "- 狀態：未處理",
+        "- 來源：缺失追蹤表單 GitHub Pages"
+      ].join("\\n");
+      const params = new URLSearchParams({title, body, labels:"缺失追蹤"});
       window.open(`${newIssueBase}?${params.toString()}`, "_blank", "noopener");
     });
 
@@ -89,18 +89,18 @@
     function value(id){ return document.getElementById(id).value.trim(); }
 
     async function loadIssues(){
-      list.innerHTML = '<div class="empty">???...</div>';
-      syncText.textContent = "?? GitHub Issues ?...";
+      list.innerHTML = '<div class="empty">讀取中...</div>';
+      syncText.textContent = "讀取 GitHub Issues 中...";
       try {
         const res = await fetch(`${apiBase}?state=all&per_page=100&sort=created&direction=desc`, {headers:{Accept:"application/vnd.github+json"}});
         if(!res.ok) throw new Error(`GitHub API ${res.status}`);
         const data = await res.json();
-        issues = data.filter(item => !item.pull_request && (item.title.startsWith("[??]") || item.labels.some(label => label.name === "????")));
-        syncText.textContent = `??? ${issues.length} ???????? ${new Date().toLocaleString("zh-TW")}`;
+        issues = data.filter(item => !item.pull_request && (item.title.startsWith("[缺失]") || item.labels.some(label => label.name === "缺失追蹤")));
+        syncText.textContent = `已同步 ${issues.length} 筆缺失，更新時間 ${new Date().toLocaleString("zh-TW")}`;
         render();
       } catch (err) {
-        syncText.textContent = "????";
-        list.innerHTML = `<div class="empty">???? GitHub Issues?${escapeHtml(err.message)}</div>`;
+        syncText.textContent = "讀取失敗";
+        list.innerHTML = `<div class="empty">無法讀取 GitHub Issues：${escapeHtml(err.message)}</div>`;
       }
     }
 
@@ -109,23 +109,26 @@
       const state = stateFilter.value;
       const visible = issues.filter(item => {
         if(state !== "all" && item.state !== state) return false;
-        const haystack = `${item.title}\n${item.body || ""}\n${item.labels.map(l => l.name).join(" ")}`.toLowerCase();
+        const haystack = `${item.title}
+${item.body || ""}
+${item.labels.map(l => l.name).join(" ")}`.toLowerCase();
         return !q || haystack.includes(q);
       });
-      if(!visible.length){ list.innerHTML = '<div class="empty">????????????</div>'; return; }
+      if(!visible.length){ list.innerHTML = '<div class="empty">目前沒有符合條件的缺失。</div>'; return; }
       list.innerHTML = visible.map(issueCard).join("");
     }
 
     function issueCard(item){
       const labels = item.labels.map(label => `<span class="badge ${labelClass(label.name)}">${escapeHtml(label.name)}</span>`).join("");
-      const state = item.state === "closed" ? '<span class="badge closed">???</span>' : '<span class="badge open">???</span>';
+      const state = item.state === "closed" ? '<span class="badge closed">已結案</span>' : '<span class="badge open">未結案</span>';
       const body = trimBody(item.body || "");
-      return `<article class="issue"><h3><a href="${item.html_url}" target="_blank" rel="noopener">#${item.number} ${escapeHtml(item.title.replace(/^\[??\]\s*/, ""))}</a></h3><div class="badges">${state}${labels}</div><div class="meta">???${new Date(item.created_at).toLocaleString("zh-TW")}????${new Date(item.updated_at).toLocaleString("zh-TW")}</div><div class="body">${escapeHtml(body)}</div></article>`;
+      return `<article class="issue"><h3><a href="${item.html_url}" target="_blank" rel="noopener">#${item.number} ${escapeHtml(item.title.replace(/^\[缺失\]\s*/, ""))}</a></h3><div class="badges">${state}${labels}</div><div class="meta">建立：${new Date(item.created_at).toLocaleString("zh-TW")}　更新：${new Date(item.updated_at).toLocaleString("zh-TW")}</div><div class="body">${escapeHtml(body)}</div></article>`;
     }
 
-    function trimBody(text){ return text.length > 900 ? text.slice(0, 900) + "\n..." : text; }
-    function labelClass(name){ if(name.includes("??") || name.includes("?")) return "high"; if(name.includes("??")) return "mid"; return ""; }
-    function escapeHtml(text){ return String(text).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[char])); }
+    function trimBody(text){ return text.length > 900 ? text.slice(0, 900) + "
+..." : text; }
+    function labelClass(name){ if(name.includes("緊急") || name.includes("高")) return "high"; if(name.includes("一般")) return "mid"; return ""; }
+    function escapeHtml(text){ return String(text).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",""":"&quot;","'":"&#39;"}[char])); }
 
     loadIssues();
   </script>
