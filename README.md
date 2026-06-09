@@ -1,6 +1,6 @@
 # 淡水新市鎮水電工程 GitHub Pages 測試版
 
-Version: VER_20260609_V6
+Version: VER_20260609_V7
 
 This repository is a static view-only GitHub Pages site generated from selected project HTML files.
 
