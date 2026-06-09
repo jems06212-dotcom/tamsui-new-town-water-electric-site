@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
@@ -13,17 +13,17 @@
     <div class="title-row">
       <div>
         <h1>缺失追蹤表單</h1>
-        <div class="meta">GitHub Issues 同步版：新增缺失後，由 GitHub Issues 作為資料來源，公開網頁自動讀取顯示。</div>
+        <div class="meta">GitHub Issues 同步版：填寫後會前往 GitHub 送出頁；在 GitHub 按下 Submit new issue 後，公開網頁會自動讀取顯示。</div>
         <div class="nav"><a href="../desktop.html">電腦瀏覽</a><a href="../mobile.html">手機瀏覽</a><a href="https://github.com/jems06212-dotcom/tamsui-new-town-water-electric-site/issues" target="_blank" rel="noopener">GitHub Issues</a></div>
       </div>
-      <div class="meta">版本：VER_20260609_V4</div>
+      <div class="meta">版本：VER_20260609_V5</div>
     </div>
   </header>
   <main>
-    <div class="notice">靜態 GitHub Pages 不能安全保存寫入用 token。本頁採安全做法：表單先整理資料，再開 GitHub 新增 Issue；按下 GitHub 的送出後，這個頁面會讀取該 Issue 顯示。</div>
+    <div class="notice">靜態 GitHub Pages 不能安全保存寫入用 token。本頁採安全做法：表單先整理資料，再帶你前往 GitHub 新增 Issue 頁。請務必在 GitHub 頁面再按 Submit new issue，才會真正新增缺失。</div>
     <div class="grid">
       <section class="panel">
-        <div class="panel-head"><h2>新增缺失</h2><p>填完後會開啟 GitHub Issue，請在 GitHub 頁面按送出。</p></div>
+        <div class="panel-head"><h2>新增缺失</h2><p>填完後會前往 GitHub Issue 送出頁，請在 GitHub 頁面按 Submit new issue。</p></div>
         <form class="form" id="defectForm">
           <div class="field"><label for="subject">缺失主旨</label><input id="subject" required placeholder="例：B2F 泵浦房配管支撐不足"></div>
           <div class="field"><label for="location">位置</label><input id="location" placeholder="例：B2F / A 區 / 泵浦房"></div>
@@ -31,9 +31,9 @@
           <div class="field"><label for="priority">優先度</label><select id="priority"><option>一般</option><option>高</option><option>緊急</option><option>低</option></select></div>
           <div class="field"><label for="dueDate">改善期限</label><input id="dueDate" type="date"></div>
           <div class="field"><label for="description">缺失說明</label><textarea id="description" placeholder="請描述缺失內容、影響範圍、需改善事項。"></textarea></div>
-          <div class="actions"><button class="primary" type="submit">建立 GitHub 缺失</button><button type="reset">清空</button></div>
+          <div class="actions"><button class="primary" type="submit">前往 GitHub 送出缺失</button><button type="reset">清空</button></div>
         </form>
-        <div class="footnote">若未登入 GitHub，系統會先要求登入。只有有 repo 權限的人能新增或修改；觀看者只能看公開頁面。</div>
+        <div class="footnote">若未登入 GitHub，系統會先要求登入。進入 GitHub 後，還要再按 Submit new issue 才算完成新增。只有有 repo 權限的人能新增或修改；觀看者只能看公開頁面。</div>
       </section>
       <section class="panel">
         <div class="panel-head"><h2>缺失清單</h2><p id="syncText">讀取 GitHub Issues 中...</p></div>
@@ -79,7 +79,7 @@
         "- 來源：缺失追蹤表單 GitHub Pages"
       ].join("\\n");
       const params = new URLSearchParams({title, body, labels:"缺失追蹤"});
-      window.open(`${newIssueBase}?${params.toString()}`, "_blank", "noopener");
+      window.location.href = `${newIssueBase}?${params.toString()}`;
     });
 
     document.getElementById("refresh").addEventListener("click", loadIssues);
