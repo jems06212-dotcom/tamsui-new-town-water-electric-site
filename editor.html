@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GrapesJS 視覺編輯器 — 淡水新市鎮水電工程</title>
+<link rel="stylesheet" href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { font-family: "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; }
+
+  /* 頂部工具列 */
+  #toolbar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px; background: #20242a; color: #fff;
+    font-size: 14px; flex-wrap: wrap;
+  }
+  #toolbar h2 { margin: 0; font-size: 16px; white-space: nowrap; }
+  #toolbar select {
+    padding: 4px 8px; border-radius: 4px; border: 1px solid #555;
+    background: #333; color: #fff; font-size: 13px;
+    min-width: 160px;
+  }
+  #toolbar button {
+    padding: 5px 14px; border: none; border-radius: 4px;
+    cursor: pointer; font-size: 13px; font-weight: 600;
+  }
+  #toolbar .btn-load { background: #555; color: #fff; }
+  #toolbar .btn-load:hover { background: #666; }
+  #toolbar .btn-save { background: #0f6b57; color: #fff; }
+  #toolbar .btn-save:hover { background: #0d8a6f; }
+  #toolbar .btn-dl { background: #2457a6; color: #fff; }
+  #toolbar .btn-dl:hover { background: #2d6bc9; }
+  #toolbar .status {
+    margin-left: auto; color: #8a9ba8; font-size: 12px;
+    white-space: nowrap;
+  }
+
+  /* 編輯器容器 */
+  #gjs { height: calc(100vh - 48px); }
+  .gjs-cv-canvas { top: 0; }
+
+  /* 隱藏非必要面板 */
+  .gjs-pn-views-container { display: none; }
+  .gjs-pn-views { display: none; }
+
+  /* loading 遮罩 */
+  #loading {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: #f4f6f8; color: #20242a;
+    font-size: 18px; gap: 16px;
+  }
+  #loading .spinner {
+    width: 40px; height: 40px; border: 4px solid #d8dee6;
+    border-top-color: #0f6b57; border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading">
+  <div class="spinner"></div>
+  <div>載入 GrapesJS 編輯器中…</div>
+</div>
+
+<!-- 頂部工具列 -->
+<div id="toolbar">
+  <h2>✏️ GrapesJS 編輯器</h2>
+  <select id="fileSelect">
+    <option value="">— 選擇要編輯的檔案 —</option>
+    <option value="index.html">index.html（首頁）</option>
+    <option value="desktop.html">desktop.html（電腦版）</option>
+    <option value="mobile.html">mobile.html（手機版）</option>
+    <option value="permissions.html">permissions.html（權限）</option>
+    <option value="CHANGELOG.html">CHANGELOG.html（版本紀錄）</option>
+    <option value="pages/五大管線申請進度.html">pages/五大管線申請進度</option>
+    <option value="pages/水電進度排程.html">pages/水電進度排程</option>
+    <option value="pages/地下室進度.html">pages/地下室進度</option>
+    <option value="pages/室內裝潢進度.html">pages/室內裝潢進度</option>
+    <option value="pages/消防法規手機簡報.html">pages/消防法規手機簡報</option>
+    <option value="pages/缺失追蹤表單.html">pages/缺失追蹤表單</option>
+    <option value="pages/營建水電整合排程.html">pages/營建水電整合排程</option>
+  </select>
+  <button class="btn-load" onclick="loadFile()">📂 載入</button>
+  <button class="btn-save" onclick="saveFile()">💾 儲存到本機</button>
+  <button class="btn-dl" onclick="downloadHtml()">⬇ 下載 HTML</button>
+  <span class="status" id="status">尚未載入檔案</span>
+</div>
+
+<!-- GrapesJS 編輯器容器 -->
+<div id="gjs"></div>
+
+<!-- GrapesJS CDN -->
+<script src="https://unpkg.com/grapesjs"></script>
+<script>
+// ========== 初始化 GrapesJS ==========
+const editor = grapesjs.init({
+  container: '#gjs',
+  height: '100%',
+  storageManager: false,
+  undoManager: { tracksLimit: 50 },
+  fromElement: false,
+  selectorManager: { custom: false },
+  styleManager: { clearProperties: 1 },
+  canvas: {
+    styles: ['assets/styles.css'],
+  },
+  plugins: [],
+});
+
+// ========== 狀態變數 ==========
+let currentFile = '';
+let loadedHeadContent = '';   // 原始檔案的 <head> 內容
+let backupTimer = null;
+
+function setStatus(msg, isError) {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.style.color = isError ? '#e74c3c' : '#8a9ba8';
+}
+
+// ---------- 解析 HTML：取出 <body> 內文與 <head> 內容 ----------
+function parseHtml(html) {
+  const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+  const bodyContent = bodyMatch ? bodyMatch[1].trim() : html;
+  const headMatch = html.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
+  const headContent = headMatch ? headMatch[1].trim() : '';
+  return { bodyContent, headContent };
+}
+
+// ---------- 載入檔案 ----------
+async function loadFile() {
+  const path = document.getElementById('fileSelect').value;
+  if (!path) { alert('請先選擇一個檔案'); return; }
+
+  setStatus('正在載入 ' + path + '…');
+  try {
+    const res = await fetch(path);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.text();
+    const { bodyContent, headContent } = parseHtml(raw);
+    editor.setComponents(bodyContent);
+    loadedHeadContent = headContent;
+    currentFile = path;
+    setStatus('已載入：' + path);
+  } catch (err) {
+    setStatus('載入失敗：' + err.message, true);
+    alert('無法載入檔案：' + err.message + '\n\n請確認檔案存在，且您正透過本地伺服器開啟此頁面（如 Live Server 或 python -m http.server）。');
+  }
+}
+
+// ---------- 提取原始 <head> 內容（保留載入時的 head） ----------
+function extractHead() {
+  if (loadedHeadContent) {
+    return loadedHeadContent;
+  }
+  // fallback 預設值
+  return '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>淡水新市鎮水電工程</title>\n<link rel="stylesheet" href="assets/styles.css">\n';
+}
+
+// ---------- 組合成完整 HTML ----------
+function buildFullHtml(bodyHtml, cssStr) {
+  var headHtml = extractHead();
+  var styleTag = '';
+  var cleanCss = (cssStr || '').trim().replace(/\n{3,}/g, '\n\n');
+  if (cleanCss) {
+    styleTag = '<style>\n' + cleanCss + '\n</style>\n';
+  }
+  return '<!doctype html>\n<html lang="zh-Hant">\n<head>\n'
+    + headHtml.trim() + '\n'
+    + styleTag
+    + '</head>\n<body>\n'
+    + bodyHtml.trim()
+    + '\n</body>\n</html>';
+}
+
+// ---------- 儲存到本機 (File System Access API) ----------
+async function saveFile() {
+  const bodyHtml = editor.getHtml();
+  const css = editor.getCss();
+  const fullHtml = buildFullHtml(bodyHtml, css);
+
+  if (!currentFile) {
+    downloadHtml();
+    return;
+  }
+
+  try {
+    const handle = await window.showSaveFilePicker({
+      suggestedName: currentFile,
+      types: [{
+        description: 'HTML 檔案',
+        accept: { 'text/html': ['.html'] }
+      }]
+    });
+    const writable = await handle.createWritable();
+    await writable.write(fullHtml);
+    await writable.close();
+    setStatus('已儲存：' + handle.name);
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      setStatus('已取消儲存');
+    } else {
+      setStatus('儲存失敗：' + err.message, true);
+      if (confirm('File System API 儲存失敗，是否改用下載方式？')) {
+        downloadHtml();
+      }
+    }
+  }
+}
+
+// ---------- 下載 HTML ----------
+function downloadHtml() {
+  const bodyHtml = editor.getHtml();
+  const css = editor.getCss();
+  const fullHtml = buildFullHtml(bodyHtml, css);
+  const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = currentFile || 'edited-page.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setStatus('已下載：' + (currentFile || 'edited-page.html'));
+}
+
+// ---------- 還原備份 ----------
+function restoreBackup() {
+  const saved = localStorage.getItem('gjs_backup');
+  if (!saved) return;
+  try {
+    const data = JSON.parse(saved);
+    if (!data.html) { localStorage.removeItem('gjs_backup'); return; }
+    if (confirm('偵測到上次未儲存的編輯內容，是否要還原？')) {
+      const { bodyContent, headContent } = parseHtml(data.html);
+      editor.setComponents(bodyContent);
+      loadedHeadContent = headContent || data.head || '';
+      currentFile = data.file || '';
+      document.getElementById('fileSelect').value = currentFile;
+      setStatus('已還原備份：' + (currentFile || '未知檔案'));
+    } else {
+      localStorage.removeItem('gjs_backup');
+    }
+  } catch (e) {
+    localStorage.removeItem('gjs_backup');
+  }
+}
+
+// ---------- 自動備份（debounced 500ms） ----------
+editor.on('component:update', function () {
+  clearTimeout(backupTimer);
+  backupTimer = setTimeout(function () {
+    try {
+      localStorage.setItem('gjs_backup', JSON.stringify({
+        html: editor.getHtml(),
+        head: loadedHeadContent,
+        file: currentFile,
+        time: Date.now()
+      }));
+    } catch (e) { /* ignore quota errors */ }
+  }, 500);
+});
+
+// ---------- 載入完成／超時 fallback ----------
+editor.on('load', function () {
+  document.getElementById('loading').style.display = 'none';
+  restoreBackup();
+});
+
+// 5 秒 timeout：CDN 載不下來也放行（即使 GrapesJS 沒 load）
+setTimeout(function () {
+  var el = document.getElementById('loading');
+  if (el && el.style.display !== 'none') {
+    el.style.display = 'none';
+  }
+}, 5000);
+</script>
+</body>
+</html>
