@@ -1,0 +1,12 @@
+# Playwright browser test artifacts
+.playwright-mcp/
+
+# Root-level screenshots and debug images
+*.png
+!assets/*.png
+
+# Token usage logs
+token-usage-output.txt
+
+# Local machine processing folder
+電腦本機軟硬體介面處理/
