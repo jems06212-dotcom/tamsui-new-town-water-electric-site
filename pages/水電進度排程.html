@@ -59,9 +59,9 @@
     <div class="title-row">
       <div>
         <h1>淡水新市鎮最新水電進度排程</h1>
-        <div class="meta">來源：淡水新市段進度表_0615.xlsx / 1150602灌漿排程；由 Excel 工作表重新匯入</div>
+        <div class="meta">來源：淡水新市段進度表_0624.xlsx / 1150602灌漿排程；由 Excel 工作表重新匯入</div>
       </div>
-      <div class="meta">基準日：2026/06/15</div>
+      <div class="meta">基準日：2026/06/24</div>
     </div>
   </header>
   <main>
@@ -1570,7 +1570,7 @@
     "source": "淡水新市段進度表_0615.xlsx / 1150602灌漿排程"
   }
 ];
-    const reportDate = new Date("2026-06-15T00:00:00+08:00");
+    const reportDate = new Date("2026-06-24T00:00:00+08:00");
     function parseDate(value) { return new Date(`${value}T00:00:00+08:00`); }
     function formatDate(value) { return value.replaceAll("-", "/"); }
     function dayDiff(a,b) { return Math.round((parseDate(b) - parseDate(a)) / 86400000); }
@@ -1605,7 +1605,7 @@
       const from = "2026-03-01";
       const to = "2027-08-31";
       const total = Math.max(dayDiff(from, to), 1);
-      const todayLeft = Math.max(0, Math.min(100, dayDiff(from, "2026-06-15") / total * 100));
+      const todayLeft = Math.max(0, Math.min(100, dayDiff(from, "2026-06-24") / total * 100));
       document.querySelector("#timeline").innerHTML = list.filter(task => parseDate(task.end) >= parseDate(from) && parseDate(task.start) <= parseDate(to)).map(task => {
         const startOffset = Math.max(0, dayDiff(from, task.start));
         const endOffset = Math.min(total, dayDiff(from, task.end));
