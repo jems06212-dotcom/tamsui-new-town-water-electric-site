@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const root = 'D:\\OPENCODE_0621\\tamsui-new-town-water-electric-site';
+const root = __dirname;
 const server = http.createServer((req, res) => {
   // Decode URL (handle Chinese filenames)
   const decoded = decodeURIComponent(req.url);

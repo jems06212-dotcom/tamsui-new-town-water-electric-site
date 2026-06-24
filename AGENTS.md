@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## Obsidian Vault
-- 路徑：`C:\Users\jems0\AppData\Roaming\opencode\obsidian\vault`
+- 路徑：`C:\Users\User\我的雲端硬碟\my-vault`
 - 結構：
   - `每日筆記/` — 原始想法、會議紀錄
   - `創作庫/` — 整理後產出
