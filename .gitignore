@@ -10,3 +10,6 @@ token-usage-output.txt
 
 # Local machine processing folder
 電腦本機軟硬體介面處理/
+
+# Agent internal working directory
+.omo/
