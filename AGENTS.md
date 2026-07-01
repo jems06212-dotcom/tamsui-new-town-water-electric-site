@@ -1,4 +1,4 @@
-# AGENTS.md
+﻿# AGENTS.md
 
 ## Obsidian Vault
 - 路徑：`C:\Users\User\我的雲端硬碟\my-vault`
