@@ -53,7 +53,6 @@
     @media (max-width:900px) { .summary { grid-template-columns:repeat(2,minmax(160px,1fr)); } }
     @media (max-width:560px) { .summary { grid-template-columns:1fr; } .section-head { align-items:flex-start; flex-direction:column; } input,select,button,.nav-link { width:100%; } }
   
-    /* 灌漿項目高亮 */
     .grout-highlight { 
       background: linear-gradient(135deg, #fff8e8 0%, #ffe4b5 100%) !important; 
       border-left: 4px solid #ff6b35 !important;
@@ -1647,6 +1646,35 @@
   }
 ]
   ;
+    const reportDate = new Date("2026-07-04T00:00:00+08:00");
+    function parseDate(value) { return new Date(`${value}T00:00:00+08:00`); }
+    function formatDate(value) { return value.replaceAll("-", "/"); }
+    function dayDiff(a,b) { return Math.round((parseDate(b) - parseDate(a)) / 86400000); }
+    function isToday(task) { return parseDate(task.start) <= reportDate && parseDate(task.end) >= reportDate; }
+    function isSite(task) { return task.source === "現場更新"; }
+    function filteredTasks() {
+      const keyword = document.querySelector("#search").value.trim().toLowerCase();
+      const phase = document.querySelector("#phaseFilter").value;
+      return tasks.filter(task => {
+        const text = `${task.main} ${task.detail} ${task.note} ${task.source}`.toLowerCase();
+        return (phase === "all" || task.main === phase) && (!keyword || text.includes(keyword));
+      });
+    }
+    function renderSummary() {
+      const today = tasks.filter(isToday);
+      const next = tasks.filter(task => parseDate(task.start) > reportDate).sort((a,b) => parseDate(a.start) - parseDate(b.start))[0];
+      const future = tasks.filter(task => parseDate(task.start) > reportDate).length;
+      const site = tasks.filter(isSite).length;
+      const summary = [
+        { label:"今日水電重點", value:today.map(task => task.detail).join("、") || "無", hint:"依 2026/07/04 與現場更新" },
+        { label:"下一工項", value:next ? next.detail : "無", hint:next ? `${formatDate(next.start)} 開始` : "" },
+        { label:"後續水電節點", value:`${future} 筆`, hint:"含配管、放樣、管料、查驗" },
+        { label:"現場更新", value:`${site} 筆`, hint:"今日鋼筋提前吊料已納入" }
+      ];
+      document.querySelector("#summary").innerHTML = summary.map(item => `<div class="metric"><small>${item.label}</small><strong>${item.value}</strong><span>${item.hint}</span></div>`).join("");
+    }
+    function renderPhaseFilter() {
+      const phases = [...new Set(tasks.map(task => task.main))];
       document.querySelector("#phaseFilter").innerHTML += phases.map(phase => `<option value="${phase}">${phase}</option>`).join("");
     }
     function renderTimeline(list) {
